@@ -10,6 +10,8 @@ import UIKit
 
 class RootListAssetsViewController: UITableViewController {
 	
+	private let reuseIdentifier = "FlickrCell"
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -25,6 +27,8 @@ class RootListAssetsViewController: UITableViewController {
 		// Dispose of any resources that can be recreated.
 	}
 	
+	// MARK: UITableViewDataSource
+	
 	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return 10
 	}
@@ -35,6 +39,14 @@ class RootListAssetsViewController: UITableViewController {
 		cell.textLabel?.text = "Row #\(indexPath.row)"
 		cell.detailTextLabel?.text = "Subtitle #\(indexPath.row)"
 		return cell
+	}
+	
+	// MARK: UITableViewDelegate
+	
+	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+		
+		let assetsGrid = AssetsGridViewController(collectionViewLayout: UICollectionViewLayout())
+		navigationController?.pushViewController(assetsGrid, animated: true)
 	}
 	
 	// MARK: Navigation bar actions
