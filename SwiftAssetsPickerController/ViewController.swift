@@ -20,6 +20,11 @@ class ViewController: UIViewController {
 		// Dispose of any resources that can be recreated.
 	}
 
-
+	@IBAction func openAssetsAction(sender: UIButton) {
+		let rootListAssets = RootListAssetsViewController()
+		let navigationController = UINavigationController(rootViewController: rootListAssets)
+		presentViewController(navigationController, animated: true, completion: nil)
+	}
+	
 }
 
