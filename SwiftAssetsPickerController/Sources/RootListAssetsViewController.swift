@@ -12,9 +12,12 @@ class RootListAssetsViewController: UITableViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		// Do any additional setup after loading the view, typically from a nib.
 		
+		// Navigation bar
+		navigationItem.title = "Photos"
 		navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: self, action: "cancelAction")
+		navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: "doneAction")
+		navigationItem.rightBarButtonItem?.enabled = false
 	}
 	
 	override func didReceiveMemoryWarning() {
@@ -38,6 +41,10 @@ class RootListAssetsViewController: UITableViewController {
 	
 	func cancelAction() {
 		dismissViewControllerAnimated(true, completion: nil)
+	}
+	
+	func doneAction() {
+		
 	}
 	
 }
