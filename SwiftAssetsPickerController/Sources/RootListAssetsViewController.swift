@@ -7,10 +7,13 @@
 //
 
 import UIKit
+import Photos
 
 class RootListAssetsViewController: UITableViewController {
 	
-	private let reuseIdentifier = "FlickrCell"
+	private var data: Array<PHObject>!
+	private var activityIndicator: UIActivityIndicatorView!
+	private let reuseIdentifier = "RootListAssetsCell"
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -20,6 +23,24 @@ class RootListAssetsViewController: UITableViewController {
 		navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: self, action: "cancelAction")
 		navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: "doneAction")
 		navigationItem.rightBarButtonItem?.enabled = false
+		
+		// Activity indicator
+		activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+		activityIndicator.hidesWhenStopped = true
+		activityIndicator.center = self.view.center
+		self.view.addSubview(activityIndicator)
+		
+		// Data
+		data = Array()
+	}
+	
+	override func viewWillAppear(animated: Bool) {
+		super.viewWillAppear(true)
+		
+		loadData()
+	}
+	
+	deinit {
 	}
 	
 	override func didReceiveMemoryWarning() {
@@ -27,14 +48,33 @@ class RootListAssetsViewController: UITableViewController {
 		// Dispose of any resources that can be recreated.
 	}
 	
+	// MARK: ---
+	
+	func loadData() {
+		tableView.userInteractionEnabled = false
+		activityIndicator.startAnimating()
+		
+		let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+		dispatch_async(dispatch_get_global_queue(priority, 0)) {
+			
+			NSThread.sleepForTimeInterval(5)
+			
+			dispatch_async(dispatch_get_main_queue()) {
+				self.tableView.reloadData()
+				self.activityIndicator.stopAnimating()
+				self.tableView.userInteractionEnabled = true
+			}
+		}
+	}
+	
 	// MARK: UITableViewDataSource
 	
 	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return 10
+		return data.count
 	}
 	
 	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "MyTestCell")
+		let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: reuseIdentifier)
 		
 		cell.textLabel?.text = "Row #\(indexPath.row)"
 		cell.detailTextLabel?.text = "Subtitle #\(indexPath.row)"
