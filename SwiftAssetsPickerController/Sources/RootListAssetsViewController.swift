@@ -9,9 +9,25 @@
 import UIKit
 import Photos
 
+enum AlbumType: Int {
+	case AllPhotos
+	case Favorites
+	case Panoramas
+	case Videos
+	case TimeLapse
+	case RecentlyDeleted
+	case UserAlbum
+}
+
+struct RootListItem {
+	var title: String!
+	var albumType: AlbumType
+	var image: UIImage!
+}
+
 class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeObserver {
 	
-	private var data: Array<PHObject>!
+	private var items: Array<RootListItem>!
 	private var activityIndicator: UIActivityIndicatorView!
 	private let reuseIdentifier = "RootListAssetsCell"
 	
@@ -31,7 +47,7 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 		self.view.addSubview(activityIndicator)
 		
 		// Data
-		data = Array()
+		items = Array()
 		
 		// Notifications
 		PHPhotoLibrary.sharedPhotoLibrary().registerChangeObserver(self)
@@ -60,9 +76,16 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 		
 		let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
 		dispatch_async(dispatch_get_global_queue(priority, 0)) {
+		
+			self.items.removeAll(keepCapacity: false)
+			
+			let allPhotosItem = RootListItem(title: "All Photos", albumType: AlbumType.AllPhotos, image: UIImage())
+			self.items.append(allPhotosItem)
 			
 			let smartAlbums = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.SmartAlbum, subtype: PHAssetCollectionSubtype.AlbumRegular, options: nil)
 			let topLevelUserCollections = PHCollectionList.fetchTopLevelUserCollectionsWithOptions(nil)
+			
+			
 			
 			dispatch_async(dispatch_get_main_queue()) {
 				self.tableView.reloadData()
@@ -75,14 +98,15 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 	// MARK: UITableViewDataSource
 	
 	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return data.count
+		return items.count
 	}
 	
 	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 		let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: reuseIdentifier)
 		
-		cell.textLabel?.text = "Row #\(indexPath.row)"
-		cell.detailTextLabel?.text = "Subtitle #\(indexPath.row)"
+		cell.textLabel?.text = items[indexPath.row].title
+		//cell.textLabel?.text = "Row #\(indexPath.row)"
+		//cell.detailTextLabel?.text = "Subtitle #\(indexPath.row)"
 		return cell
 	}
 	
