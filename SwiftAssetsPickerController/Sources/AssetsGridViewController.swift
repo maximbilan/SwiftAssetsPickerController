@@ -29,6 +29,7 @@ class AssetsGridViewController: UICollectionViewController {
 		flowLayout.scrollDirection = UICollectionViewScrollDirection.Vertical
 		
 		collectionView?.collectionViewLayout = flowLayout
+		collectionView?.backgroundColor = UIColor.whiteColor()
 		collectionView?.registerClass(UICollectionViewCell.classForCoder(), forCellWithReuseIdentifier: reuseIdentifier)
 	}
 	
