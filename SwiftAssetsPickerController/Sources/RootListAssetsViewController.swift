@@ -17,6 +17,8 @@ enum AlbumType: Int {
 	case TimeLapse
 	case RecentlyDeleted
 	case UserAlbum
+	
+	static let titles = ["All Photos", "Favorites", "Panoramas", "Videos", "Time Lapse", "Recently Deleted", "User Album"]
 }
 
 struct RootListItem {
@@ -79,34 +81,40 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 		
 			self.items.removeAll(keepCapacity: false)
 			
-			var testImage: UIImage!
-			
-			let fetchOptions = PHFetchOptions()
-			fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
-			
-			let fetchResult = PHAsset.fetchAssetsWithMediaType(.Image, options: fetchOptions)
-			
-			if let lastAsset:PHAsset = fetchResult.lastObject as? PHAsset {
-				
-				let imageRequestOptions = PHImageRequestOptions()
-				imageRequestOptions.synchronous = true
-				
-				let manager = PHImageManager.defaultManager()
-				manager.requestImageDataForAsset(lastAsset,
-					options: imageRequestOptions,
-					resultHandler: { (data, uti, orientation, dict ) -> Void in
-						if let image = UIImage(data: data) {
-							testImage = image
-						}
-				})
-			}
-			
-			let allPhotosItem = RootListItem(title: "All Photos", albumType: AlbumType.AllPhotos, image: testImage)
+			let allPhotosItem = RootListItem(title: AlbumType.titles[AlbumType.AllPhotos.rawValue], albumType: AlbumType.AllPhotos, image: self.lastImageFromCollection(nil))
 			self.items.append(allPhotosItem)
 			
 			let smartAlbums = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.SmartAlbum, subtype: PHAssetCollectionSubtype.AlbumRegular, options: nil)
-			let topLevelUserCollections = PHCollectionList.fetchTopLevelUserCollectionsWithOptions(nil)
+			for var i: Int = 0; i < smartAlbums.count; ++i {
+				if let smartAlbum = smartAlbums[i] as? PHAssetCollection {
+					var item: RootListItem? = nil
+					
+					switch smartAlbum.assetCollectionSubtype {
+					case .SmartAlbumFavorites:
+						item = RootListItem(title: AlbumType.titles[AlbumType.Favorites.rawValue], albumType: AlbumType.Favorites, image: self.lastImageFromCollection(smartAlbum))
+						break
+					case .SmartAlbumPanoramas:
+						item = RootListItem(title: AlbumType.titles[AlbumType.Panoramas.rawValue], albumType: AlbumType.Panoramas, image: self.lastImageFromCollection(smartAlbum))
+						break
+					default:
+						break
+					}
+					
+					if item != nil {
+						self.items.append(item!)
+					}
+				}
+			}
 			
+			
+			
+			let topLevelUserCollections = PHCollectionList.fetchTopLevelUserCollectionsWithOptions(nil)
+			for var i: Int = 0; i < topLevelUserCollections.count; ++i {
+				if let userCollection = topLevelUserCollections[i] as? PHAssetCollection {
+					let item = RootListItem(title: userCollection.localizedTitle, albumType: AlbumType.UserAlbum, image: self.lastImageFromCollection(userCollection))
+					self.items.append(item)
+				}
+			}
 			
 			
 			dispatch_async(dispatch_get_main_queue()) {
@@ -155,6 +163,36 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 	
 	func photoLibraryDidChange(changeInstance: PHChange!) {
 		
+	}
+	
+	// MARK: Other
+	
+	func lastImageFromCollection(collection: PHAssetCollection?) -> UIImage? {
+		
+		var returnImage: UIImage? = nil
+		
+		let fetchOptions = PHFetchOptions()
+		fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
+		
+		let fetchResult = (collection == nil) ? PHAsset.fetchAssetsWithMediaType(.Image, options: fetchOptions) : PHAsset.fetchAssetsInAssetCollection(collection, options: fetchOptions)
+		if let lastAsset:PHAsset = fetchResult.lastObject as? PHAsset {
+			
+			let imageRequestOptions = PHImageRequestOptions()
+			imageRequestOptions.synchronous = true
+			
+			let manager = PHImageManager.defaultManager()
+			manager.requestImageDataForAsset(lastAsset,
+				options: imageRequestOptions,
+				resultHandler: { (data, uti, orientation, dict ) -> Void in
+					if data != nil {
+						if let image = UIImage(data: data) {
+							returnImage = image
+						}
+					}
+			})
+		}
+		
+		return returnImage
 	}
 	
 }
