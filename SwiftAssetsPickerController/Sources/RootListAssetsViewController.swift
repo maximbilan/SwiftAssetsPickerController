@@ -79,7 +79,29 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 		
 			self.items.removeAll(keepCapacity: false)
 			
-			let allPhotosItem = RootListItem(title: "All Photos", albumType: AlbumType.AllPhotos, image: UIImage())
+			var testImage: UIImage!
+			
+			let fetchOptions = PHFetchOptions()
+			fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
+			
+			let fetchResult = PHAsset.fetchAssetsWithMediaType(.Image, options: fetchOptions)
+			
+			if let lastAsset:PHAsset = fetchResult.lastObject as? PHAsset {
+				
+				let imageRequestOptions = PHImageRequestOptions()
+				imageRequestOptions.synchronous = true
+				
+				let manager = PHImageManager.defaultManager()
+				manager.requestImageDataForAsset(lastAsset,
+					options: imageRequestOptions,
+					resultHandler: { (data, uti, orientation, dict ) -> Void in
+						if let image = UIImage(data: data) {
+							testImage = image
+						}
+				})
+			}
+			
+			let allPhotosItem = RootListItem(title: "All Photos", albumType: AlbumType.AllPhotos, image: testImage)
 			self.items.append(allPhotosItem)
 			
 			let smartAlbums = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.SmartAlbum, subtype: PHAssetCollectionSubtype.AlbumRegular, options: nil)
@@ -105,6 +127,7 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 		let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: reuseIdentifier)
 		
 		cell.textLabel?.text = items[indexPath.row].title
+		cell.imageView?.image = items[indexPath.row].image
 		//cell.textLabel?.text = "Row #\(indexPath.row)"
 		//cell.detailTextLabel?.text = "Subtitle #\(indexPath.row)"
 		return cell
