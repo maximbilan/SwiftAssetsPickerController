@@ -96,6 +96,13 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 					case .SmartAlbumPanoramas:
 						item = RootListItem(title: AlbumType.titles[AlbumType.Panoramas.rawValue], albumType: AlbumType.Panoramas, image: self.lastImageFromCollection(smartAlbum))
 						break
+					case .SmartAlbumVideos:
+						item = RootListItem(title: AlbumType.titles[AlbumType.Videos.rawValue], albumType: AlbumType.Videos, image: self.lastImageFromCollection(smartAlbum))
+						break
+					case .SmartAlbumTimelapses:
+						item = RootListItem(title: AlbumType.titles[AlbumType.TimeLapse.rawValue], albumType: AlbumType.TimeLapse, image: self.lastImageFromCollection(smartAlbum))
+						break
+						
 					default:
 						break
 					}
@@ -105,8 +112,6 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 					}
 				}
 			}
-			
-			
 			
 			let topLevelUserCollections = PHCollectionList.fetchTopLevelUserCollectionsWithOptions(nil)
 			for var i: Int = 0; i < topLevelUserCollections.count; ++i {
