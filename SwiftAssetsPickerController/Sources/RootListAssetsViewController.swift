@@ -9,7 +9,7 @@
 import UIKit
 import Photos
 
-class RootListAssetsViewController: UITableViewController {
+class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeObserver {
 	
 	private var data: Array<PHObject>!
 	private var activityIndicator: UIActivityIndicatorView!
@@ -32,6 +32,9 @@ class RootListAssetsViewController: UITableViewController {
 		
 		// Data
 		data = Array()
+		
+		// Notifications
+		PHPhotoLibrary.sharedPhotoLibrary().registerChangeObserver(self)
 	}
 	
 	override func viewWillAppear(animated: Bool) {
@@ -41,6 +44,7 @@ class RootListAssetsViewController: UITableViewController {
 	}
 	
 	deinit {
+		PHPhotoLibrary.sharedPhotoLibrary().unregisterChangeObserver(self)
 	}
 	
 	override func didReceiveMemoryWarning() {
@@ -57,7 +61,8 @@ class RootListAssetsViewController: UITableViewController {
 		let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
 		dispatch_async(dispatch_get_global_queue(priority, 0)) {
 			
-			NSThread.sleepForTimeInterval(5)
+			let smartAlbums = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.SmartAlbum, subtype: PHAssetCollectionSubtype.AlbumRegular, options: nil)
+			let topLevelUserCollections = PHCollectionList.fetchTopLevelUserCollectionsWithOptions(nil)
 			
 			dispatch_async(dispatch_get_main_queue()) {
 				self.tableView.reloadData()
@@ -96,6 +101,12 @@ class RootListAssetsViewController: UITableViewController {
 	}
 	
 	func doneAction() {
+		
+	}
+	
+	// MARK: PHPhotoLibraryChangeObserver
+	
+	func photoLibraryDidChange(changeInstance: PHChange!) {
 		
 	}
 	
