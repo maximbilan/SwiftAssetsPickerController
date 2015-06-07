@@ -7,10 +7,14 @@
 //
 
 import UIKit
+import Photos
 
 class AssetsGridViewController: UICollectionViewController {
 	
+	var collection: PHAssetCollection?
 	private let reuseIdentifier = "AssetsGridCell"
+	
+	private var assetsFetchResult: PHFetchResult!
 	
 	override init(collectionViewLayout layout: UICollectionViewLayout) {
 		super.init(collectionViewLayout: layout)
@@ -31,6 +35,9 @@ class AssetsGridViewController: UICollectionViewController {
 		collectionView?.collectionViewLayout = flowLayout
 		collectionView?.backgroundColor = UIColor.whiteColor()
 		collectionView?.registerClass(UICollectionViewCell.classForCoder(), forCellWithReuseIdentifier: reuseIdentifier)
+		
+		assetsFetchResult = (collection == nil) ? PHAsset.fetchAssetsWithMediaType(.Image, options: nil) : PHAsset.fetchAssetsInAssetCollection(collection, options: nil)
+		
 	}
 	
 	override func didReceiveMemoryWarning() {
@@ -44,13 +51,28 @@ class AssetsGridViewController: UICollectionViewController {
 	// MARK: UICollectionViewDataSource
 	
 	override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return 10
+		return assetsFetchResult.count
 	}
 	
 	override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
 		let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! UICollectionViewCell
-		cell.backgroundColor = UIColor.blackColor()
+		//cell.backgroundColor = UIColor.blackColor()
 		// Configure the cell
+		
+		let asset = assetsFetchResult[indexPath.row] as! PHAsset
+		
+		if let imageView = cell.viewWithTag(101) {
+			
+		}
+		else {
+			let imageView = UIImageView(frame: cell.frame)
+			imageView.tag = 101
+			PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: CGSizeMake(100, 100), contentMode: PHImageContentMode.AspectFill, options: nil, resultHandler: { (image: UIImage!, info: [NSObject : AnyObject]!) -> Void in
+				imageView.image = image
+			})
+			cell.addSubview(imageView)
+		}
+		
 		return cell
 	}
 	

@@ -25,6 +25,7 @@ struct RootListItem {
 	var title: String!
 	var albumType: AlbumType
 	var image: UIImage!
+	var collection: PHAssetCollection?
 }
 
 class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeObserver {
@@ -81,7 +82,7 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 		
 			self.items.removeAll(keepCapacity: false)
 			
-			let allPhotosItem = RootListItem(title: AlbumType.titles[AlbumType.AllPhotos.rawValue], albumType: AlbumType.AllPhotos, image: self.lastImageFromCollection(nil))
+			let allPhotosItem = RootListItem(title: AlbumType.titles[AlbumType.AllPhotos.rawValue], albumType: AlbumType.AllPhotos, image: self.lastImageFromCollection(nil), collection: nil)
 			let assetsCount = self.assetsCountFromCollection(nil)
 			if assetsCount > 0 {
 				self.items.append(allPhotosItem)
@@ -99,16 +100,16 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 					
 					switch smartAlbum.assetCollectionSubtype {
 					case .SmartAlbumFavorites:
-						item = RootListItem(title: AlbumType.titles[AlbumType.Favorites.rawValue], albumType: AlbumType.Favorites, image: self.lastImageFromCollection(smartAlbum))
+						item = RootListItem(title: AlbumType.titles[AlbumType.Favorites.rawValue], albumType: AlbumType.Favorites, image: self.lastImageFromCollection(smartAlbum), collection: smartAlbum)
 						break
 					case .SmartAlbumPanoramas:
-						item = RootListItem(title: AlbumType.titles[AlbumType.Panoramas.rawValue], albumType: AlbumType.Panoramas, image: self.lastImageFromCollection(smartAlbum))
+						item = RootListItem(title: AlbumType.titles[AlbumType.Panoramas.rawValue], albumType: AlbumType.Panoramas, image: self.lastImageFromCollection(smartAlbum), collection: smartAlbum)
 						break
 					case .SmartAlbumVideos:
-						item = RootListItem(title: AlbumType.titles[AlbumType.Videos.rawValue], albumType: AlbumType.Videos, image: self.lastImageFromCollection(smartAlbum))
+						item = RootListItem(title: AlbumType.titles[AlbumType.Videos.rawValue], albumType: AlbumType.Videos, image: self.lastImageFromCollection(smartAlbum), collection: smartAlbum)
 						break
 					case .SmartAlbumTimelapses:
-						item = RootListItem(title: AlbumType.titles[AlbumType.TimeLapse.rawValue], albumType: AlbumType.TimeLapse, image: self.lastImageFromCollection(smartAlbum))
+						item = RootListItem(title: AlbumType.titles[AlbumType.TimeLapse.rawValue], albumType: AlbumType.TimeLapse, image: self.lastImageFromCollection(smartAlbum), collection: smartAlbum)
 						break
 						
 					default:
@@ -128,7 +129,7 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 					if assetsCount == 0 {
 						continue
 					}
-					let item = RootListItem(title: userCollection.localizedTitle, albumType: AlbumType.UserAlbum, image: self.lastImageFromCollection(userCollection))
+					let item = RootListItem(title: userCollection.localizedTitle, albumType: AlbumType.UserAlbum, image: self.lastImageFromCollection(userCollection), collection: userCollection)
 					self.items.append(item)
 				}
 			}
@@ -162,6 +163,7 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
 		
 		let assetsGrid = AssetsGridViewController(collectionViewLayout: UICollectionViewLayout())
+		assetsGrid.collection = items[indexPath.row].collection
 		navigationController?.pushViewController(assetsGrid, animated: true)
 	}
 	
