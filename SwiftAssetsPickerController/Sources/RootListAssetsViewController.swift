@@ -185,40 +185,6 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 			let imageRequestOptions = PHImageRequestOptions()
 			imageRequestOptions.synchronous = true
 			
-			let manager = PHImageManager.defaultManager()
-//			manager.requestImageDataForAsset(lastAsset,
-//				options: imageRequestOptions,
-//				resultHandler: { (data, uti, orientation, dict ) -> Void in
-//					if data != nil {
-//						if let image = UIImage(data: data) {
-//							returnImage = image
-//						}
-//					}
-//			})
-			
-//			NSInteger retinaScale = [UIScreen mainScreen].scale;
-//			CGSize retinaSquare = CGSizeMake(100*retinaScale, 100*retinaScale);
-//			
-//			PHImageRequestOptions *cropToSquare = [[PHImageRequestOptions alloc] init];
-//			cropToSquare.resizeMode = PHImageRequestOptionsResizeModeExact;
-//			
-//			CGFloat cropSideLength = MIN(asset.pixelWidth, asset.pixelHeight);
-//			CGRect square = CGRectMake(0, 0, cropSideLength, cropSideLength);
-//			CGRect cropRect = CGRectApplyAffineTransform(square,
-//			CGAffineTransformMakeScale(1.0 / asset.pixelWidth,
-//			1.0 / asset.pixelHeight));
-//			
-//			cropToSquare.normalizedCropRect = cropRect;
-//			
-//			[[PHImageManager defaultManager]
-//			requestImageForAsset:(PHAsset *)asset
-//			targetSize:retinaSquare
-//			contentMode:PHImageContentModeAspectFit
-//			options:cropToSquare
-//			resultHandler:^(UIImage *result, NSDictionary *info) {
-//			self.imageView.image = result;
-//			}];
-			
 			let retinaScale = UIScreen.mainScreen().scale
 			let retinaSquare = CGSizeMake(100 * retinaScale, 100 * retinaScale)
 			
@@ -234,7 +200,6 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 			PHImageManager.defaultManager().requestImageForAsset(lastAsset, targetSize: retinaSquare, contentMode: PHImageContentMode.AspectFit, options: cropToSquare, resultHandler: { (image: UIImage!, info :[NSObject : AnyObject]!) -> Void in
 				returnImage = image
 			})
-			
 		}
 		
 		return returnImage
