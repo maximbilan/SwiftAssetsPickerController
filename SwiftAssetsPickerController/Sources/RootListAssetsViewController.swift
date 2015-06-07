@@ -82,12 +82,20 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 			self.items.removeAll(keepCapacity: false)
 			
 			let allPhotosItem = RootListItem(title: AlbumType.titles[AlbumType.AllPhotos.rawValue], albumType: AlbumType.AllPhotos, image: self.lastImageFromCollection(nil))
-			self.items.append(allPhotosItem)
+			let assetsCount = self.assetsCountFromCollection(nil)
+			if assetsCount > 0 {
+				self.items.append(allPhotosItem)
+			}
 			
 			let smartAlbums = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.SmartAlbum, subtype: PHAssetCollectionSubtype.AlbumRegular, options: nil)
 			for var i: Int = 0; i < smartAlbums.count; ++i {
 				if let smartAlbum = smartAlbums[i] as? PHAssetCollection {
 					var item: RootListItem? = nil
+					
+					let assetsCount = self.assetsCountFromCollection(smartAlbum)
+					if assetsCount == 0 {
+						continue
+					}
 					
 					switch smartAlbum.assetCollectionSubtype {
 					case .SmartAlbumFavorites:
@@ -116,11 +124,14 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 			let topLevelUserCollections = PHCollectionList.fetchTopLevelUserCollectionsWithOptions(nil)
 			for var i: Int = 0; i < topLevelUserCollections.count; ++i {
 				if let userCollection = topLevelUserCollections[i] as? PHAssetCollection {
+					let assetsCount = self.assetsCountFromCollection(userCollection)
+					if assetsCount == 0 {
+						continue
+					}
 					let item = RootListItem(title: userCollection.localizedTitle, albumType: AlbumType.UserAlbum, image: self.lastImageFromCollection(userCollection))
 					self.items.append(item)
 				}
 			}
-			
 			
 			dispatch_async(dispatch_get_main_queue()) {
 				self.tableView.reloadData()
@@ -171,6 +182,11 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 	}
 	
 	// MARK: Other
+	
+	func assetsCountFromCollection(collection: PHAssetCollection?) -> Int {
+		let fetchResult = (collection == nil) ? PHAsset.fetchAssetsWithMediaType(.Image, options: nil) : PHAsset.fetchAssetsInAssetCollection(collection, options: nil)
+		return fetchResult.count
+	}
 	
 	func lastImageFromCollection(collection: PHAssetCollection?) -> UIImage? {
 		
