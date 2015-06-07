@@ -153,8 +153,7 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 		
 		cell.textLabel?.text = items[indexPath.row].title
 		cell.imageView?.image = items[indexPath.row].image
-		//cell.textLabel?.text = "Row #\(indexPath.row)"
-		//cell.detailTextLabel?.text = "Subtitle #\(indexPath.row)"
+		
 		return cell
 	}
 	
