@@ -58,7 +58,29 @@ class AssetsGridViewController: UICollectionViewController, UICollectionViewDele
 	override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
 		let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! UICollectionViewCell
 		cell.backgroundColor = UIColor.blackColor()
-		// Configure the cell
+		
+//		image = [[PFImageView alloc] initWithFrame:cell.contentView.frame];
+//		[cell.contentView addSubview:image];
+		
+		let currentTag = cell.tag + 1
+		cell.tag = currentTag
+		
+		var thumbnail: UIImageView!
+		if cell.contentView.subviews.count == 0 {
+			thumbnail = UIImageView(frame: cell.contentView.frame)
+			cell.contentView.addSubview(thumbnail)
+		}
+		else {
+			thumbnail = cell.contentView.subviews[0] as! UIImageView
+		}
+		
+		let asset = assetsFetchResult[indexPath.row] as! PHAsset
+		
+		PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: CGSizeMake(100, 100), contentMode: PHImageContentMode.AspectFill, options: nil, resultHandler: { (image: UIImage!, info: [NSObject : AnyObject]!) -> Void in
+			if cell.tag == currentTag {
+				thumbnail.image = image
+			}
+		})
 		
 //		let asset = assetsFetchResult[indexPath.row] as! PHAsset
 //		
