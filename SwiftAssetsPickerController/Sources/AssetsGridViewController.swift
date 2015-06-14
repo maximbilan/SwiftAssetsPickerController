@@ -59,9 +59,6 @@ class AssetsGridViewController: UICollectionViewController, UICollectionViewDele
 		let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! UICollectionViewCell
 		cell.backgroundColor = UIColor.blackColor()
 		
-//		image = [[PFImageView alloc] initWithFrame:cell.contentView.frame];
-//		[cell.contentView addSubview:image];
-		
 		let currentTag = cell.tag + 1
 		cell.tag = currentTag
 		
@@ -81,25 +78,6 @@ class AssetsGridViewController: UICollectionViewController, UICollectionViewDele
 				thumbnail.image = image
 			}
 		})
-		
-//		let asset = assetsFetchResult[indexPath.row] as! PHAsset
-//		
-//		if let imageView = cell.viewWithTag(101) as? UIImageView {
-//			for imageCache in imagesCache {
-//				if let image = imageCache[indexPath.row] {
-//					imageView.image = image
-//				}
-//			}
-//		}
-//		else {
-//			let imageView = UIImageView(frame: cell.frame)
-//			imageView.tag = 101
-//			PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: CGSizeMake(100, 100), contentMode: PHImageContentMode.AspectFill, options: nil, resultHandler: { (image: UIImage!, info: [NSObject : AnyObject]!) -> Void in
-//				self.imagesCache.append([indexPath.row: image])
-//				imageView.image = image
-//			})
-//			cell.addSubview(imageView)
-//		}
 		
 		return cell
 	}
