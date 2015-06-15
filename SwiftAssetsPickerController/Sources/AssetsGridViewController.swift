@@ -12,10 +12,7 @@ import Photos
 class AssetsGridViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 	
 	var collection: PHAssetCollection?
-	var imagesCache: Array<Dictionary<Int, UIImage>> = Array()
-	
 	private let reuseIdentifier = "AssetsGridCell"
-	
 	private var assetsFetchResult: PHFetchResult!
 	
 	override init(collectionViewLayout layout: UICollectionViewLayout) {
@@ -28,10 +25,8 @@ class AssetsGridViewController: UICollectionViewController, UICollectionViewDele
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		// Do any additional setup after loading the view, typically from a nib.
 		
 		let flowLayout = UICollectionViewFlowLayout()
-		//flowLayout.itemSize = CGSizeMake(200, 140)
 		flowLayout.scrollDirection = UICollectionViewScrollDirection.Vertical
 		
 		collectionView?.collectionViewLayout = flowLayout
