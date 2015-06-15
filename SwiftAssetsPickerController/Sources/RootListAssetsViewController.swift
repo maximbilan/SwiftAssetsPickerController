@@ -34,6 +34,8 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 	private var activityIndicator: UIActivityIndicatorView!
 	private let reuseIdentifier = "RootListAssetsCell"
 	
+	// MARK: View controllers methods
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -71,7 +73,7 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 		// Dispose of any resources that can be recreated.
 	}
 	
-	// MARK: ---
+	// MARK: Daya loading
 	
 	func loadData() {
 		tableView.userInteractionEnabled = false
