@@ -202,6 +202,8 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 		if let lastAsset:PHAsset = fetchResult.lastObject as? PHAsset {
 			
 			let imageRequestOptions = PHImageRequestOptions()
+			imageRequestOptions.deliveryMode = PHImageRequestOptionsDeliveryMode.FastFormat
+			imageRequestOptions.resizeMode = PHImageRequestOptionsResizeMode.Fast
 			imageRequestOptions.synchronous = true
 			
 			let retinaScale = UIScreen.mainScreen().scale
