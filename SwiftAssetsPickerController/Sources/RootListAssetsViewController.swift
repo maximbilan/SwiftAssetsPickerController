@@ -165,6 +165,7 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 		
 		let assetsGrid = AssetsGridViewController(collectionViewLayout: UICollectionViewLayout())
 		assetsGrid.collection = items[indexPath.row].collection
+		assetsGrid.title = items[indexPath.row].title
 		navigationController?.pushViewController(assetsGrid, animated: true)
 	}
 	
