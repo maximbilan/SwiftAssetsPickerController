@@ -36,11 +36,6 @@ class AssetsGridViewController: UICollectionViewController, UICollectionViewDele
 		assetsFetchResult = (collection == nil) ? PHAsset.fetchAssetsWithMediaType(.Image, options: nil) : PHAsset.fetchAssetsInAssetCollection(collection, options: nil)
 	}
 	
-	override func didReceiveMemoryWarning() {
-		super.didReceiveMemoryWarning()
-		// Dispose of any resources that can be recreated.
-	}
-	
 	// MARK: UICollectionViewDelegate
 	
 	
