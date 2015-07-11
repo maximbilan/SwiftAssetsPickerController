@@ -68,7 +68,7 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 		PHPhotoLibrary.sharedPhotoLibrary().unregisterChangeObserver(self)
 	}
 	
-	// MARK: Daya loading
+	// MARK: Data loading
 	
 	func loadData() {
 		tableView.userInteractionEnabled = false
@@ -177,7 +177,7 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 	// MARK: PHPhotoLibraryChangeObserver
 	
 	func photoLibraryDidChange(changeInstance: PHChange!) {
-		
+		loadData()
 	}
 	
 	// MARK: Other
