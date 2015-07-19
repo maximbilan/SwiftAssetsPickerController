@@ -14,6 +14,7 @@ class AssetsGridViewController: UICollectionViewController, UICollectionViewDele
 	var collection: PHAssetCollection?
 	private let reuseIdentifier = "AssetsGridCell"
 	private var assetsFetchResult: PHFetchResult!
+	private var assetGridThumbnailSize: CGSize = CGSizeMake(0, 0)
 	
 	override init(collectionViewLayout layout: UICollectionViewLayout) {
 		super.init(collectionViewLayout: layout)
@@ -32,6 +33,11 @@ class AssetsGridViewController: UICollectionViewController, UICollectionViewDele
 		collectionView?.collectionViewLayout = flowLayout
 		collectionView?.backgroundColor = UIColor.whiteColor()
 		collectionView?.registerClass(UICollectionViewCell.classForCoder(), forCellWithReuseIdentifier: reuseIdentifier)
+		
+		let scale = UIScreen.mainScreen().scale;
+		let cellSize = flowLayout.itemSize
+		assetGridThumbnailSize = CGSizeMake(cellSize.width * scale, cellSize.height * scale);
+		assetGridThumbnailSize = CGSizeMake(78, 78)
 		
 		assetsFetchResult = (collection == nil) ? PHAsset.fetchAssetsWithMediaType(.Image, options: nil) : PHAsset.fetchAssetsInAssetCollection(collection, options: nil)
 	}
@@ -55,6 +61,8 @@ class AssetsGridViewController: UICollectionViewController, UICollectionViewDele
 		var thumbnail: UIImageView!
 		if cell.contentView.subviews.count == 0 {
 			thumbnail = UIImageView(frame: cell.contentView.frame)
+			thumbnail.contentMode = .ScaleAspectFill
+			thumbnail.clipsToBounds = true
 			cell.contentView.addSubview(thumbnail)
 		}
 		else {
@@ -80,7 +88,13 @@ class AssetsGridViewController: UICollectionViewController, UICollectionViewDele
 		
 		cropToSquare.normalizedCropRect = cropRect
 		
-		PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: retinaSquare, contentMode: PHImageContentMode.AspectFit, options: cropToSquare, resultHandler: { (image: UIImage!, info :[NSObject : AnyObject]!) -> Void in
+//		PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: retinaSquare, contentMode: PHImageContentMode.AspectFit, options: cropToSquare, resultHandler: { (image: UIImage!, info :[NSObject : AnyObject]!) -> Void in
+//			if cell.tag == currentTag {
+//				thumbnail.image = image
+//			}
+//		})
+		
+		PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: assetGridThumbnailSize, contentMode: PHImageContentMode.AspectFill, options: nil, resultHandler: { (image: UIImage!, info :[NSObject : AnyObject]!) -> Void in
 			if cell.tag == currentTag {
 				thumbnail.image = image
 			}
