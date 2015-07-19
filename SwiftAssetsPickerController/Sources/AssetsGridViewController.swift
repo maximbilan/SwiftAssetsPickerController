@@ -63,7 +63,24 @@ class AssetsGridViewController: UICollectionViewController, UICollectionViewDele
 		
 		let asset = assetsFetchResult[indexPath.row] as! PHAsset
 		
-		PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: CGSizeMake(100, 100), contentMode: PHImageContentMode.AspectFill, options: nil, resultHandler: { (image: UIImage!, info: [NSObject : AnyObject]!) -> Void in
+		let imageRequestOptions = PHImageRequestOptions()
+		imageRequestOptions.deliveryMode = PHImageRequestOptionsDeliveryMode.FastFormat
+		imageRequestOptions.resizeMode = PHImageRequestOptionsResizeMode.Fast
+		imageRequestOptions.synchronous = true
+		
+		let retinaScale = UIScreen.mainScreen().scale
+		let retinaSquare = CGSizeMake(100 * retinaScale, 100 * retinaScale)
+		
+		let cropToSquare = PHImageRequestOptions()
+		cropToSquare.resizeMode = PHImageRequestOptionsResizeMode.Exact
+		
+		let cropSideLength = min(asset.pixelWidth, asset.pixelHeight)
+		let square = CGRectMake(CGFloat(0), CGFloat(0), CGFloat(cropSideLength), CGFloat(cropSideLength))
+		let cropRect = CGRectApplyAffineTransform(square, CGAffineTransformMakeScale(1.0 / CGFloat(asset.pixelWidth), 1.0 / CGFloat(asset.pixelHeight)))
+		
+		cropToSquare.normalizedCropRect = cropRect
+		
+		PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: retinaSquare, contentMode: PHImageContentMode.AspectFit, options: cropToSquare, resultHandler: { (image: UIImage!, info :[NSObject : AnyObject]!) -> Void in
 			if cell.tag == currentTag {
 				thumbnail.image = image
 			}
