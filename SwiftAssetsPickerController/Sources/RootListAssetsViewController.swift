@@ -148,8 +148,6 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 		let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: reuseIdentifier)
 		
-//		cell.imageView?.contentMode = .ScaleAspectFill
-//		cell.imageView?.clipsToBounds = true
 		cell.imageView?.image = items[indexPath.row].image
 		cell.textLabel?.text = items[indexPath.row].title
 		
@@ -206,9 +204,6 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 			
 			let retinaScale = UIScreen.mainScreen().scale
 			let retinaSquare = CGSizeMake(100 * retinaScale, 100 * retinaScale)
-			
-//			let cropToSquare = PHImageRequestOptions()
-//			cropToSquare.resizeMode = PHImageRequestOptionsResizeMode.Exact
 			
 			let cropSideLength = min(lastAsset.pixelWidth, lastAsset.pixelHeight)
 			let square = CGRectMake(CGFloat(0), CGFloat(0), CGFloat(cropSideLength), CGFloat(cropSideLength))
