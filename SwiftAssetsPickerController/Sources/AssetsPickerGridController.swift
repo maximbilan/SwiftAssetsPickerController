@@ -93,7 +93,8 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 	// MARK: UICollectionViewDelegateFlowLayout
 	
 	func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-		let a = (self.view.frame.size.width - 4 * 1 - 2 * 2) * 0.25
+		let itemCount: CGFloat = UIDevice.currentDevice().userInterfaceIdiom == .Phone ? 4 : 8
+		let a = (self.view.frame.size.width - itemCount * 1 - 2 * 2) / itemCount
 		return CGSizeMake(a, a)
 	}
 	
