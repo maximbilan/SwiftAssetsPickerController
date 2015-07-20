@@ -28,7 +28,7 @@ struct RootListItem {
 	var collection: PHAssetCollection?
 }
 
-class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeObserver {
+class AssetsPickerController: UITableViewController, PHPhotoLibraryChangeObserver {
 	
 	private var items: Array<RootListItem>!
 	private var activityIndicator: UIActivityIndicatorView!
@@ -158,7 +158,7 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 	
 	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
 		
-		let assetsGrid = AssetsGridViewController(collectionViewLayout: UICollectionViewLayout())
+		let assetsGrid = AssetsPickerGridController(collectionViewLayout: UICollectionViewLayout())
 		assetsGrid.collection = items[indexPath.row].collection
 		assetsGrid.title = items[indexPath.row].title
 		navigationController?.pushViewController(assetsGrid, animated: true)

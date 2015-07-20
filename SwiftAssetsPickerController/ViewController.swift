@@ -21,7 +21,7 @@ class ViewController: UIViewController {
 	}
 
 	@IBAction func openAssetsAction(sender: UIButton) {
-		let rootListAssets = RootListAssetsViewController()
+		let rootListAssets = AssetsPickerController()
 		let navigationController = UINavigationController(rootViewController: rootListAssets)
 		presentViewController(navigationController, animated: true, completion: nil)
 	}

@@ -9,7 +9,7 @@
 import UIKit
 import Photos
 
-class AssetsGridViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class AssetsPickerGridController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 	
 	var collection: PHAssetCollection?
 	private let reuseIdentifier = "AssetsGridCell"

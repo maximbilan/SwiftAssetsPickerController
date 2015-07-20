@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6DB6A6191B21F168005455C3 /* RootListAssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB6A6181B21F168005455C3 /* RootListAssetsViewController.swift */; };
-		6DB6A61B1B21F212005455C3 /* AssetsGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB6A61A1B21F212005455C3 /* AssetsGridViewController.swift */; };
+		6DB6A6191B21F168005455C3 /* AssetsPickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB6A6181B21F168005455C3 /* AssetsPickerController.swift */; };
+		6DB6A61B1B21F212005455C3 /* AssetsPickerGridController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DB6A61A1B21F212005455C3 /* AssetsPickerGridController.swift */; };
 		6DD2E7A11B134D7900E8FACF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD2E7A01B134D7900E8FACF /* AppDelegate.swift */; };
 		6DD2E7A31B134D7900E8FACF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD2E7A21B134D7900E8FACF /* ViewController.swift */; };
 		6DD2E7A61B134D7900E8FACF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DD2E7A41B134D7900E8FACF /* Main.storyboard */; };
@@ -17,8 +17,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		6DB6A6181B21F168005455C3 /* RootListAssetsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootListAssetsViewController.swift; sourceTree = "<group>"; };
-		6DB6A61A1B21F212005455C3 /* AssetsGridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetsGridViewController.swift; sourceTree = "<group>"; };
+		6DB6A6181B21F168005455C3 /* AssetsPickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetsPickerController.swift; sourceTree = "<group>"; };
+		6DB6A61A1B21F212005455C3 /* AssetsPickerGridController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetsPickerGridController.swift; sourceTree = "<group>"; };
 		6DD2E79B1B134D7900E8FACF /* SwiftAssetsPickerController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftAssetsPickerController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DD2E79F1B134D7900E8FACF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6DD2E7A01B134D7900E8FACF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -42,8 +42,8 @@
 		6DB6A6171B21F132005455C3 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				6DB6A6181B21F168005455C3 /* RootListAssetsViewController.swift */,
-				6DB6A61A1B21F212005455C3 /* AssetsGridViewController.swift */,
+				6DB6A6181B21F168005455C3 /* AssetsPickerController.swift */,
+				6DB6A61A1B21F212005455C3 /* AssetsPickerGridController.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -158,9 +158,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				6DD2E7A31B134D7900E8FACF /* ViewController.swift in Sources */,
-				6DB6A61B1B21F212005455C3 /* AssetsGridViewController.swift in Sources */,
+				6DB6A61B1B21F212005455C3 /* AssetsPickerGridController.swift in Sources */,
 				6DD2E7A11B134D7900E8FACF /* AppDelegate.swift in Sources */,
-				6DB6A6191B21F168005455C3 /* RootListAssetsViewController.swift in Sources */,
+				6DB6A6191B21F168005455C3 /* AssetsPickerController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
