@@ -69,17 +69,39 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 		cell.tag = currentTag
 		
 		var thumbnail: UIImageView!
+		var typeIcon: UIImageView!
 		if cell.contentView.subviews.count == 0 {
 			thumbnail = UIImageView(frame: cell.contentView.frame)
 			thumbnail.contentMode = .ScaleAspectFill
 			thumbnail.clipsToBounds = true
 			cell.contentView.addSubview(thumbnail)
+			
+			typeIcon = UIImageView(frame: CGRectMake(3, cell.contentView.frame.size.height - 3 - 20, 20, 20))
+			typeIcon.contentMode = .ScaleAspectFill
+			typeIcon.clipsToBounds = true
+			cell.contentView.addSubview(typeIcon)
 		}
 		else {
 			thumbnail = cell.contentView.subviews[0] as! UIImageView
+			typeIcon = cell.contentView.subviews[1] as! UIImageView
 		}
 		
 		let asset = assets[indexPath.row]
+		
+		typeIcon.image = nil
+		if asset.mediaType == .Video {
+			if asset.mediaSubtypes == .VideoTimelapse {
+				typeIcon.image = UIImage(named: "timelapse-icon.png")
+			}
+			else {
+				typeIcon.image = UIImage(named: "video-icon.png")
+			}
+		}
+		else if asset.mediaType == .Image {
+			if asset.mediaSubtypes == .PhotoPanorama {
+				typeIcon.image = UIImage(named: "panorama-icon.png")
+			}
+		}
 		
 		cachingImageManager.requestImageForAsset(asset, targetSize: assetGridThumbnailSize, contentMode: PHImageContentMode.AspectFill, options: nil, resultHandler: { (image: UIImage!, info :[NSObject : AnyObject]!) -> Void in
 			if cell.tag == currentTag {
