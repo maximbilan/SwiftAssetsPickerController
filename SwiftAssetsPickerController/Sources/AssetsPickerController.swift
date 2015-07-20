@@ -32,6 +32,7 @@ class AssetsPickerController: UITableViewController, PHPhotoLibraryChangeObserve
 	
 	private var items: Array<RootListItem>!
 	private var activityIndicator: UIActivityIndicatorView!
+	private let thumbnailSize = CGSizeMake(64, 64)
 	private let reuseIdentifier = "RootListAssetsCell"
 	
 	// MARK: View controllers methods
@@ -57,13 +58,8 @@ class AssetsPickerController: UITableViewController, PHPhotoLibraryChangeObserve
 		// Notifications
 		PHPhotoLibrary.sharedPhotoLibrary().registerChangeObserver(self)
 		
+		// Load photo library
 		loadData()
-	}
-	
-	override func viewWillAppear(animated: Bool) {
-		super.viewWillAppear(true)
-		
-		//loadData()
 	}
 	
 	deinit {
@@ -159,7 +155,6 @@ class AssetsPickerController: UITableViewController, PHPhotoLibraryChangeObserve
 	// MARK: UITableViewDelegate
 	
 	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		
 		let assetsGrid = AssetsPickerGridController(collectionViewLayout: UICollectionViewLayout())
 		assetsGrid.collection = items[indexPath.row].collection
 		assetsGrid.title = items[indexPath.row].title
@@ -205,7 +200,7 @@ class AssetsPickerController: UITableViewController, PHPhotoLibraryChangeObserve
 			imageRequestOptions.synchronous = true
 			
 			let retinaScale = UIScreen.mainScreen().scale
-			let retinaSquare = CGSizeMake(100 * retinaScale, 100 * retinaScale)
+			let retinaSquare = CGSizeMake(thumbnailSize.width * retinaScale, thumbnailSize.height * retinaScale)
 			
 			let cropSideLength = min(lastAsset.pixelWidth, lastAsset.pixelHeight)
 			let square = CGRectMake(CGFloat(0), CGFloat(0), CGFloat(cropSideLength), CGFloat(cropSideLength))
