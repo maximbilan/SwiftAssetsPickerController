@@ -11,9 +11,19 @@ import Photos
 
 class AssetsPickerGridController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 	
+	let cachingImageManager = PHCachingImageManager()
 	var collection: PHAssetCollection?
 	private let reuseIdentifier = "AssetsGridCell"
-	private var assetsFetchResult: PHFetchResult!
+	
+	private var assets: [PHAsset]! {
+		willSet {
+			cachingImageManager.stopCachingImagesForAllAssets()
+		}
+		
+		didSet {
+			cachingImageManager.startCachingImagesForAssets(self.assets, targetSize: PHImageManagerMaximumSize, contentMode: PHImageContentMode.AspectFill, options: nil)
+		}
+	}
 	private var assetGridThumbnailSize: CGSize = CGSizeMake(0, 0)
 	
 	override init(collectionViewLayout layout: UICollectionViewLayout) {
@@ -39,7 +49,8 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 		assetGridThumbnailSize = CGSizeMake(cellSize.width * scale, cellSize.height * scale);
 		assetGridThumbnailSize = CGSizeMake(78, 78)
 		
-		assetsFetchResult = (collection == nil) ? PHAsset.fetchAssetsWithMediaType(.Image, options: nil) : PHAsset.fetchAssetsInAssetCollection(collection, options: nil)
+		let assetsFetchResult = (collection == nil) ? PHAsset.fetchAssetsWithMediaType(.Image, options: nil) : PHAsset.fetchAssetsInAssetCollection(collection, options: nil)
+		assets = assetsFetchResult.objectsAtIndexes(NSIndexSet(indexesInRange: NSMakeRange(0, assetsFetchResult.count))) as! [PHAsset]
 	}
 	
 	// MARK: UICollectionViewDelegate
@@ -48,7 +59,7 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 	// MARK: UICollectionViewDataSource
 	
 	override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return assetsFetchResult.count
+		return assets.count
 	}
 	
 	override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -69,7 +80,7 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 			thumbnail = cell.contentView.subviews[0] as! UIImageView
 		}
 		
-		let asset = assetsFetchResult[indexPath.row] as! PHAsset
+		let asset = assets[indexPath.row]
 		
 		let imageRequestOptions = PHImageRequestOptions()
 		imageRequestOptions.deliveryMode = PHImageRequestOptionsDeliveryMode.FastFormat
@@ -94,7 +105,7 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 //			}
 //		})
 		
-		PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: assetGridThumbnailSize, contentMode: PHImageContentMode.AspectFill, options: nil, resultHandler: { (image: UIImage!, info :[NSObject : AnyObject]!) -> Void in
+		cachingImageManager.requestImageForAsset(asset, targetSize: assetGridThumbnailSize, contentMode: PHImageContentMode.AspectFill, options: nil, resultHandler: { (image: UIImage!, info :[NSObject : AnyObject]!) -> Void in
 			if cell.tag == currentTag {
 				thumbnail.image = image
 			}
