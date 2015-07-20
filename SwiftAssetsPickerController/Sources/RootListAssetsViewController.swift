@@ -148,8 +148,10 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 		let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: reuseIdentifier)
 		
-		cell.textLabel?.text = items[indexPath.row].title
+//		cell.imageView?.contentMode = .ScaleAspectFill
+//		cell.imageView?.clipsToBounds = true
 		cell.imageView?.image = items[indexPath.row].image
+		cell.textLabel?.text = items[indexPath.row].title
 		
 		return cell
 	}
@@ -199,22 +201,22 @@ class RootListAssetsViewController: UITableViewController, PHPhotoLibraryChangeO
 			
 			let imageRequestOptions = PHImageRequestOptions()
 			imageRequestOptions.deliveryMode = PHImageRequestOptionsDeliveryMode.FastFormat
-			imageRequestOptions.resizeMode = PHImageRequestOptionsResizeMode.Fast
+			imageRequestOptions.resizeMode = PHImageRequestOptionsResizeMode.Exact
 			imageRequestOptions.synchronous = true
 			
 			let retinaScale = UIScreen.mainScreen().scale
 			let retinaSquare = CGSizeMake(100 * retinaScale, 100 * retinaScale)
 			
-			let cropToSquare = PHImageRequestOptions()
-			cropToSquare.resizeMode = PHImageRequestOptionsResizeMode.Exact
+//			let cropToSquare = PHImageRequestOptions()
+//			cropToSquare.resizeMode = PHImageRequestOptionsResizeMode.Exact
 			
 			let cropSideLength = min(lastAsset.pixelWidth, lastAsset.pixelHeight)
 			let square = CGRectMake(CGFloat(0), CGFloat(0), CGFloat(cropSideLength), CGFloat(cropSideLength))
 			let cropRect = CGRectApplyAffineTransform(square, CGAffineTransformMakeScale(1.0 / CGFloat(lastAsset.pixelWidth), 1.0 / CGFloat(lastAsset.pixelHeight)))
 			
-			cropToSquare.normalizedCropRect = cropRect
+			imageRequestOptions.normalizedCropRect = cropRect
 			
-			PHImageManager.defaultManager().requestImageForAsset(lastAsset, targetSize: retinaSquare, contentMode: PHImageContentMode.AspectFit, options: cropToSquare, resultHandler: { (image: UIImage!, info :[NSObject : AnyObject]!) -> Void in
+			PHImageManager.defaultManager().requestImageForAsset(lastAsset, targetSize: retinaSquare, contentMode: PHImageContentMode.AspectFit, options: imageRequestOptions, resultHandler: { (image: UIImage!, info :[NSObject : AnyObject]!) -> Void in
 				returnImage = image
 			})
 		}

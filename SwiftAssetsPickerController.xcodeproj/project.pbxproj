@@ -71,8 +71,8 @@
 				6DD2E7A01B134D7900E8FACF /* AppDelegate.swift */,
 				6DD2E7A21B134D7900E8FACF /* ViewController.swift */,
 				6DD2E7A41B134D7900E8FACF /* Main.storyboard */,
-				6DD2E7A71B134D7900E8FACF /* Images.xcassets */,
 				6DD2E7A91B134D7900E8FACF /* LaunchScreen.xib */,
+				6DD2E7A71B134D7900E8FACF /* Images.xcassets */,
 				6DD2E79E1B134D7900E8FACF /* Supporting Files */,
 			);
 			path = SwiftAssetsPickerController;
