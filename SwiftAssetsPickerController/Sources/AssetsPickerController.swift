@@ -56,12 +56,14 @@ class AssetsPickerController: UITableViewController, PHPhotoLibraryChangeObserve
 		
 		// Notifications
 		PHPhotoLibrary.sharedPhotoLibrary().registerChangeObserver(self)
+		
+		loadData()
 	}
 	
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(true)
 		
-		loadData()
+		//loadData()
 	}
 	
 	deinit {
