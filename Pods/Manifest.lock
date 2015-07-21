@@ -1,0 +1,10 @@
+PODS:
+  - CheckMarkView (0.2)
+
+DEPENDENCIES:
+  - CheckMarkView
+
+SPEC CHECKSUMS:
+  CheckMarkView: 37a534202f3a3225d2c42d502f1fee5aa8806a01
+
+COCOAPODS: 0.38.0
