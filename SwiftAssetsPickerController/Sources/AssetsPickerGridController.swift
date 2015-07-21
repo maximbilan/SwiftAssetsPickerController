@@ -8,6 +8,7 @@
 
 import UIKit
 import Photos
+import CheckMarkView
 
 class AssetsPickerGridController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 	
@@ -70,6 +71,9 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 		
 		var thumbnail: UIImageView!
 		var typeIcon: UIImageView!
+		
+		var checkMarkView: CheckMarkView!
+		
 		if cell.contentView.subviews.count == 0 {
 			thumbnail = UIImageView(frame: cell.contentView.frame)
 			thumbnail.contentMode = .ScaleAspectFill
