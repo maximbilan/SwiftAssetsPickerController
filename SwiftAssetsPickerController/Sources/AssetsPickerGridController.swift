@@ -46,6 +46,9 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 		collectionView?.backgroundColor = UIColor.whiteColor()
 		collectionView?.registerClass(UICollectionViewCell.classForCoder(), forCellWithReuseIdentifier: reuseIdentifier)
 		
+		navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: "doneAction")
+		navigationItem.rightBarButtonItem?.enabled = false
+		
 		let scale = UIScreen.mainScreen().scale;
 		let cellSize = flowLayout.itemSize
 		assetGridThumbnailSize = CGSizeMake(cellSize.width * scale, cellSize.height * scale);
@@ -84,6 +87,7 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 			
 			checkMarkView = CheckMarkView(frame: CGRectMake(cell.contentView.frame.size.width - 3 - 28, 3, 28, 28))
 			checkMarkView.backgroundColor = UIColor.clearColor()
+			checkMarkView.style = CheckMarkView.CheckMarkStyle.Nothing
 			cell.contentView.addSubview(checkMarkView)
 		}
 		else {
@@ -109,7 +113,6 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 			}
 		}
 
-		checkMarkView.style = CheckMarkView.CheckMarkStyle.GrayedOut;
 		checkMarkView.checked = selectedIndexes.contains(indexPath.row)
 		
 		cachingImageManager.requestImageForAsset(asset, targetSize: assetGridThumbnailSize, contentMode: PHImageContentMode.AspectFill, options: nil, resultHandler: { (image: UIImage!, info :[NSObject : AnyObject]!) -> Void in
@@ -124,7 +127,14 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 	// MARK: UICollectionViewDelegate
 	
 	override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-		selectedIndexes.insert(indexPath.row)
+		if selectedIndexes.contains(indexPath.row) {
+			selectedIndexes.remove(indexPath.row)
+			navigationItem.rightBarButtonItem?.enabled = selectedIndexes.count > 0 ? true : false
+		}
+		else {
+			navigationItem.rightBarButtonItem?.enabled = true
+			selectedIndexes.insert(indexPath.row)
+		}
 		collectionView.reloadItemsAtIndexPaths([indexPath])
 	}
 	
@@ -146,6 +156,18 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 	
 	func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
 		return 1
+	}
+	
+	// MARK: -
+	
+	func doneAction() {
+		if selectedIndexes.count > 0 {
+			var selectedAssets: Array<PHAsset!> = Array()
+			for index in selectedIndexes {
+				let asset = assets[index]
+				selectedAssets.append(asset)
+			}
+		}
 	}
 	
 }
