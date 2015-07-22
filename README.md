@@ -35,7 +35,7 @@ let navigationController = UINavigationController(rootViewController: rootListAs
 presentViewController(navigationController, animated: true, completion: nil)
 </pre>
 
-<i>didSelectAssets</> closure will be called when the user will select assets and will press <i>Done</i> button.
+<i>didSelectAssets</i> closure will be called when the user will select assets and will press <i>Done</i> button.
 
 ## License
 
