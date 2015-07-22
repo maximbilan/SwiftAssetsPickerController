@@ -14,6 +14,7 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 	
 	let cachingImageManager = PHCachingImageManager()
 	var collection: PHAssetCollection?
+	var selectedIndexes: Set<Int> = Set()
 	private let reuseIdentifier = "AssetsGridCell"
 	
 	private var assets: [PHAsset]! {
@@ -53,9 +54,6 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 		assets = assetsFetchResult.objectsAtIndexes(NSIndexSet(indexesInRange: NSMakeRange(0, assetsFetchResult.count))) as! [PHAsset]
 	}
 	
-	// MARK: UICollectionViewDelegate
-	
-	
 	// MARK: UICollectionViewDataSource
 	
 	override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -84,13 +82,14 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 			typeIcon.clipsToBounds = true
 			cell.contentView.addSubview(typeIcon)
 			
-			checkMarkView = CheckMarkView(frame: CGRectMake(cell.contentView.frame.size.width - 3 - 20, 3, 20, 20))
+			checkMarkView = CheckMarkView(frame: CGRectMake(cell.contentView.frame.size.width - 3 - 28, 3, 28, 28))
 			checkMarkView.backgroundColor = UIColor.clearColor()
 			cell.contentView.addSubview(checkMarkView)
 		}
 		else {
 			thumbnail = cell.contentView.subviews[0] as! UIImageView
 			typeIcon = cell.contentView.subviews[1] as! UIImageView
+			checkMarkView = cell.contentView.subviews[2] as! CheckMarkView
 		}
 		
 		let asset = assets[indexPath.row]
@@ -110,8 +109,8 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 			}
 		}
 
-		//checkMarkView.checked = true
-//		checkMarkView.style
+		checkMarkView.style = CheckMarkView.CheckMarkStyle.GrayedOut;
+		checkMarkView.checked = selectedIndexes.contains(indexPath.row)
 		
 		cachingImageManager.requestImageForAsset(asset, targetSize: assetGridThumbnailSize, contentMode: PHImageContentMode.AspectFill, options: nil, resultHandler: { (image: UIImage!, info :[NSObject : AnyObject]!) -> Void in
 			if cell.tag == currentTag {
@@ -120,6 +119,13 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 		})
 		
 		return cell
+	}
+	
+	// MARK: UICollectionViewDelegate
+	
+	override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+		selectedIndexes.insert(indexPath.row)
+		collectionView.reloadItemsAtIndexPaths([indexPath])
 	}
 	
 	// MARK: UICollectionViewDelegateFlowLayout
