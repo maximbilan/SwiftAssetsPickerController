@@ -17,6 +17,8 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 	var selectedIndexes: Set<Int> = Set()
 	private let reuseIdentifier = "AssetsGridCell"
 	
+	var didSelectAssets: ((Array<PHAsset!>) -> ())?
+	
 	private var assets: [PHAsset]! {
 		willSet {
 			cachingImageManager.stopCachingImagesForAllAssets()
@@ -161,13 +163,18 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 	// MARK: -
 	
 	func doneAction() {
-		if selectedIndexes.count > 0 {
-			var selectedAssets: Array<PHAsset!> = Array()
-			for index in selectedIndexes {
-				let asset = assets[index]
-				selectedAssets.append(asset)
-			}
+		
+		var selectedAssets: Array<PHAsset!> = Array()
+		for index in selectedIndexes {
+			let asset = assets[index]
+			selectedAssets.append(asset)
 		}
+		
+		if didSelectAssets != nil {
+			didSelectAssets!(selectedAssets)
+		}
+		
+		navigationController!.dismissViewControllerAnimated(true, completion: nil)
 	}
 	
 }

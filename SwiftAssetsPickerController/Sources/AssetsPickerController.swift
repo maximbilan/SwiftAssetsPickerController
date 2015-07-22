@@ -35,6 +35,8 @@ class AssetsPickerController: UITableViewController, PHPhotoLibraryChangeObserve
 	private let thumbnailSize = CGSizeMake(64, 64)
 	private let reuseIdentifier = "RootListAssetsCell"
 	
+	var didSelectAssets: ((Array<PHAsset!>) -> ())?
+	
 	// MARK: View controllers methods
 	
 	override func viewDidLoad() {
@@ -157,6 +159,7 @@ class AssetsPickerController: UITableViewController, PHPhotoLibraryChangeObserve
 	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
 		let assetsGrid = AssetsPickerGridController(collectionViewLayout: UICollectionViewLayout())
 		assetsGrid.collection = items[indexPath.row].collection
+		assetsGrid.didSelectAssets = didSelectAssets
 		assetsGrid.title = items[indexPath.row].title
 		navigationController?.pushViewController(assetsGrid, animated: true)
 	}
