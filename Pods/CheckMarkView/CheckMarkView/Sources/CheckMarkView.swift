@@ -10,13 +10,13 @@ import UIKit
 
 public class CheckMarkView: UIView {
 
-	enum CheckMarkStyle: Int {
+	public enum CheckMarkStyle: Int {
 		case Nothing
 		case OpenCircle
 		case GrayedOut
 	}
 	
-	var checked: Bool {
+	public var checked: Bool {
 		get {
 			return _checked
 		}
@@ -26,7 +26,7 @@ public class CheckMarkView: UIView {
 		}
 	}
 
-	var style: CheckMarkStyle {
+	public var style: CheckMarkStyle {
 		get {
 			return _style
 		}
