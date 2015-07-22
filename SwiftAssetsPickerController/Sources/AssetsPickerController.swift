@@ -9,37 +9,37 @@
 import UIKit
 import Photos
 
-enum AlbumType: Int {
-	case AllPhotos
-	case Favorites
-	case Panoramas
-	case Videos
-	case TimeLapse
-	case RecentlyDeleted
-	case UserAlbum
+public class AssetsPickerController: UITableViewController, PHPhotoLibraryChangeObserver {
 	
-	static let titles = ["All Photos", "Favorites", "Panoramas", "Videos", "Time Lapse", "Recently Deleted", "User Album"]
-}
-
-struct RootListItem {
-	var title: String!
-	var albumType: AlbumType
-	var image: UIImage!
-	var collection: PHAssetCollection?
-}
-
-class AssetsPickerController: UITableViewController, PHPhotoLibraryChangeObserver {
+	enum AlbumType: Int {
+		case AllPhotos
+		case Favorites
+		case Panoramas
+		case Videos
+		case TimeLapse
+		case RecentlyDeleted
+		case UserAlbum
+		
+		static let titles = ["All Photos", "Favorites", "Panoramas", "Videos", "Time Lapse", "Recently Deleted", "User Album"]
+	}
+	
+	struct RootListItem {
+		var title: String!
+		var albumType: AlbumType
+		var image: UIImage!
+		var collection: PHAssetCollection?
+	}
 	
 	private var items: Array<RootListItem>!
 	private var activityIndicator: UIActivityIndicatorView!
 	private let thumbnailSize = CGSizeMake(64, 64)
 	private let reuseIdentifier = "RootListAssetsCell"
 	
-	var didSelectAssets: ((Array<PHAsset!>) -> ())?
+	public var didSelectAssets: ((Array<PHAsset!>) -> ())?
 	
 	// MARK: View controllers methods
 	
-	override func viewDidLoad() {
+	override public func viewDidLoad() {
 		super.viewDidLoad()
 		
 		// Navigation bar
@@ -141,11 +141,11 @@ class AssetsPickerController: UITableViewController, PHPhotoLibraryChangeObserve
 	
 	// MARK: UITableViewDataSource
 	
-	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	override public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return items.count
 	}
 	
-	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+	override public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 		let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: reuseIdentifier)
 		
 		cell.imageView?.image = items[indexPath.row].image
@@ -156,7 +156,7 @@ class AssetsPickerController: UITableViewController, PHPhotoLibraryChangeObserve
 	
 	// MARK: UITableViewDelegate
 	
-	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+	override public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
 		let assetsGrid = AssetsPickerGridController(collectionViewLayout: UICollectionViewLayout())
 		assetsGrid.collection = items[indexPath.row].collection
 		assetsGrid.didSelectAssets = didSelectAssets
@@ -176,7 +176,7 @@ class AssetsPickerController: UITableViewController, PHPhotoLibraryChangeObserve
 	
 	// MARK: PHPhotoLibraryChangeObserver
 	
-	func photoLibraryDidChange(changeInstance: PHChange!) {
+	public func photoLibraryDidChange(changeInstance: PHChange!) {
 		loadData()
 	}
 	
