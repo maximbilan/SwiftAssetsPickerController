@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/cocoapods/l/SwiftAssetsPickerController.svg?style=flat)](http://cocoadocs.org/docsets/SwiftAssetsPickerController)
 [![Platform](https://img.shields.io/cocoapods/p/SwiftAssetsPickerController.svg?style=flat)](http://cocoadocs.org/docsets/SwiftAssetsPickerController)
 
-Unfortunately <i>Apple</i> doesn't provide accessory type property for <i>UICollectionViewCell</i>, such as for <i>UITableViewCell</i>, so I provide custom way to create checkmark. Just simple view which draws programmatically checkmark with some styles.
+Assets picker controller based on iOS 8 Photos framework.
 
 ![alt tag](https://raw.github.com/maximbilan/SwiftAssetsPickerController/master/img/img1.png)
 ![alt tag](https://raw.github.com/maximbilan/SwiftAssetsPickerController/master/img/img2.png)
@@ -34,8 +34,6 @@ assetsPickerController.didSelectAssets = {(assets: Array<PHAsset!>) -> () in
 let navigationController = UINavigationController(rootViewController: rootListAssets)
 presentViewController(navigationController, animated: true, completion: nil)
 </pre>
-
-<i>didSelectAssets</i> closure will be called when the user will select assets and will press <i>Done</i> button.
 
 ## License
 
