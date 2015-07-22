@@ -8,12 +8,16 @@
 
 import UIKit
 import Photos
+import CheckMarkView
 
 class AssetsPickerGridController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 	
 	let cachingImageManager = PHCachingImageManager()
 	var collection: PHAssetCollection?
+	var selectedIndexes: Set<Int> = Set()
 	private let reuseIdentifier = "AssetsGridCell"
+	
+	var didSelectAssets: ((Array<PHAsset!>) -> ())?
 	
 	private var assets: [PHAsset]! {
 		willSet {
@@ -44,6 +48,9 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 		collectionView?.backgroundColor = UIColor.whiteColor()
 		collectionView?.registerClass(UICollectionViewCell.classForCoder(), forCellWithReuseIdentifier: reuseIdentifier)
 		
+		navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: "doneAction")
+		navigationItem.rightBarButtonItem?.enabled = false
+		
 		let scale = UIScreen.mainScreen().scale;
 		let cellSize = flowLayout.itemSize
 		assetGridThumbnailSize = CGSizeMake(cellSize.width * scale, cellSize.height * scale);
@@ -51,9 +58,6 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 		let assetsFetchResult = (collection == nil) ? PHAsset.fetchAssetsWithMediaType(.Image, options: nil) : PHAsset.fetchAssetsInAssetCollection(collection, options: nil)
 		assets = assetsFetchResult.objectsAtIndexes(NSIndexSet(indexesInRange: NSMakeRange(0, assetsFetchResult.count))) as! [PHAsset]
 	}
-	
-	// MARK: UICollectionViewDelegate
-	
 	
 	// MARK: UICollectionViewDataSource
 	
@@ -70,6 +74,8 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 		
 		var thumbnail: UIImageView!
 		var typeIcon: UIImageView!
+		var checkMarkView: CheckMarkView!
+		
 		if cell.contentView.subviews.count == 0 {
 			thumbnail = UIImageView(frame: cell.contentView.frame)
 			thumbnail.contentMode = .ScaleAspectFill
@@ -80,10 +86,16 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 			typeIcon.contentMode = .ScaleAspectFill
 			typeIcon.clipsToBounds = true
 			cell.contentView.addSubview(typeIcon)
+			
+			checkMarkView = CheckMarkView(frame: CGRectMake(cell.contentView.frame.size.width - 3 - 28, 3, 28, 28))
+			checkMarkView.backgroundColor = UIColor.clearColor()
+			checkMarkView.style = CheckMarkView.CheckMarkStyle.Nothing
+			cell.contentView.addSubview(checkMarkView)
 		}
 		else {
 			thumbnail = cell.contentView.subviews[0] as! UIImageView
 			typeIcon = cell.contentView.subviews[1] as! UIImageView
+			checkMarkView = cell.contentView.subviews[2] as! CheckMarkView
 		}
 		
 		let asset = assets[indexPath.row]
@@ -102,6 +114,8 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 				typeIcon.image = UIImage(named: "panorama-icon.png")
 			}
 		}
+
+		checkMarkView.checked = selectedIndexes.contains(indexPath.row)
 		
 		cachingImageManager.requestImageForAsset(asset, targetSize: assetGridThumbnailSize, contentMode: PHImageContentMode.AspectFill, options: nil, resultHandler: { (image: UIImage!, info :[NSObject : AnyObject]!) -> Void in
 			if cell.tag == currentTag {
@@ -110,6 +124,20 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 		})
 		
 		return cell
+	}
+	
+	// MARK: UICollectionViewDelegate
+	
+	override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+		if selectedIndexes.contains(indexPath.row) {
+			selectedIndexes.remove(indexPath.row)
+			navigationItem.rightBarButtonItem?.enabled = selectedIndexes.count > 0 ? true : false
+		}
+		else {
+			navigationItem.rightBarButtonItem?.enabled = true
+			selectedIndexes.insert(indexPath.row)
+		}
+		collectionView.reloadItemsAtIndexPaths([indexPath])
 	}
 	
 	// MARK: UICollectionViewDelegateFlowLayout
@@ -130,6 +158,23 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 	
 	func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
 		return 1
+	}
+	
+	// MARK: -
+	
+	func doneAction() {
+		
+		var selectedAssets: Array<PHAsset!> = Array()
+		for index in selectedIndexes {
+			let asset = assets[index]
+			selectedAssets.append(asset)
+		}
+		
+		if didSelectAssets != nil {
+			didSelectAssets!(selectedAssets)
+		}
+		
+		navigationController!.dismissViewControllerAnimated(true, completion: nil)
 	}
 	
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Photos
 
 class ViewController: UIViewController {
 
@@ -22,6 +23,9 @@ class ViewController: UIViewController {
 
 	@IBAction func openAssetsAction(sender: UIButton) {
 		let rootListAssets = AssetsPickerController()
+		rootListAssets.didSelectAssets = {(assets: Array<PHAsset!>) -> () in
+			println(assets)
+		}
 		let navigationController = UINavigationController(rootViewController: rootListAssets)
 		presentViewController(navigationController, animated: true, completion: nil)
 	}
