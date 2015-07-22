@@ -13,12 +13,13 @@ Unfortunately <i>Apple</i> doesn't provide accessory type property for <i>UIColl
 
 <b>Manual:</b>
 <pre>
-Copy CheckMarkView.swift to your project.
+Copy AssetsPickerController.swift and AssetsPickerGridController.swift to your project.
+Also framework uses CheckMarkView. You can found <a href="https://github.com/maximbilan/CheckMarkView">here</a>.
 </pre>
 
 <b>Cocoapods:</b>
 <pre>
-pod 'CheckMarkView'
+pod 'SwiftAssetsPickerController'
 </pre>
 
 ## How to use
