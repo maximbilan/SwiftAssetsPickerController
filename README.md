@@ -35,6 +35,8 @@ let navigationController = UINavigationController(rootViewController: rootListAs
 presentViewController(navigationController, animated: true, completion: nil)
 </pre>
 
+<i>didSelectAssets</> closure will be called when the user will select assets and will press <i>Done</i> button.
+
 ## License
 
 SwiftAssetsPickerController is available under the MIT license. See the LICENSE file for more info.
