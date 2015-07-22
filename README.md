@@ -6,8 +6,8 @@
 
 Simple assets picker controller based on iOS 8 Photos framework. Supports iCloud photos and videos. It's written in Swift.
 
-![alt tag](https://raw.github.com/maximbilan/SwiftAssetsPickerController/master/img/img1.png)
 ![alt tag](https://raw.github.com/maximbilan/SwiftAssetsPickerController/master/img/img2.png)
+![alt tag](https://raw.github.com/maximbilan/SwiftAssetsPickerController/master/img/img1.png)
 
 # Installation
 
