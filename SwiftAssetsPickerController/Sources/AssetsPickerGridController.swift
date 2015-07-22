@@ -12,13 +12,18 @@ import CheckMarkView
 
 class AssetsPickerGridController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 	
+	private var assetGridThumbnailSize: CGSize = CGSizeMake(0, 0)
+	private let reuseIdentifier = "AssetsGridCell"
+	private let typeIconSize = CGSizeMake(20, 20)
+	private let checkMarkSize = CGSizeMake(28, 28)
+	private let iconOffset: CGFloat = 3
+	private let collectionViewEdgeInset: CGFloat = 2
+	private let assetsInRow: CGFloat = UIDevice.currentDevice().userInterfaceIdiom == .Phone ? 4 : 8
+	
 	let cachingImageManager = PHCachingImageManager()
 	var collection: PHAssetCollection?
 	var selectedIndexes: Set<Int> = Set()
-	private let reuseIdentifier = "AssetsGridCell"
-	
 	var didSelectAssets: ((Array<PHAsset!>) -> ())?
-	
 	private var assets: [PHAsset]! {
 		willSet {
 			cachingImageManager.stopCachingImagesForAllAssets()
@@ -28,7 +33,8 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 			cachingImageManager.startCachingImagesForAssets(self.assets, targetSize: PHImageManagerMaximumSize, contentMode: PHImageContentMode.AspectFill, options: nil)
 		}
 	}
-	private var assetGridThumbnailSize: CGSize = CGSizeMake(0, 0)
+	
+	// MARK: - Initialization
 	
 	override init(collectionViewLayout layout: UICollectionViewLayout) {
 		super.init(collectionViewLayout: layout)
@@ -82,12 +88,12 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 			thumbnail.clipsToBounds = true
 			cell.contentView.addSubview(thumbnail)
 			
-			typeIcon = UIImageView(frame: CGRectMake(3, cell.contentView.frame.size.height - 3 - 20, 20, 20))
+			typeIcon = UIImageView(frame: CGRectMake(iconOffset, cell.contentView.frame.size.height - iconOffset - typeIconSize.height, typeIconSize.width, typeIconSize.height))
 			typeIcon.contentMode = .ScaleAspectFill
 			typeIcon.clipsToBounds = true
 			cell.contentView.addSubview(typeIcon)
 			
-			checkMarkView = CheckMarkView(frame: CGRectMake(cell.contentView.frame.size.width - 3 - 28, 3, 28, 28))
+			checkMarkView = CheckMarkView(frame: CGRectMake(cell.contentView.frame.size.width - iconOffset - checkMarkSize.width, iconOffset, checkMarkSize.width, checkMarkSize.height))
 			checkMarkView.backgroundColor = UIColor.clearColor()
 			checkMarkView.style = CheckMarkView.CheckMarkStyle.Nothing
 			cell.contentView.addSubview(checkMarkView)
@@ -143,13 +149,12 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 	// MARK: UICollectionViewDelegateFlowLayout
 	
 	func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-		let itemCount: CGFloat = UIDevice.currentDevice().userInterfaceIdiom == .Phone ? 4 : 8
-		let a = (self.view.frame.size.width - itemCount * 1 - 2 * 2) / itemCount
+		let a = (self.view.frame.size.width - assetsInRow * 1 - 2 * collectionViewEdgeInset) / assetsInRow
 		return CGSizeMake(a, a)
 	}
 	
 	func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-		return UIEdgeInsetsMake(2, 2, 2, 2)
+		return UIEdgeInsetsMake(collectionViewEdgeInset, collectionViewEdgeInset, collectionViewEdgeInset, collectionViewEdgeInset)
 	}
 	
 	func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
@@ -160,7 +165,7 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 		return 1
 	}
 	
-	// MARK: -
+	// MARK: - Navigation bar actions
 	
 	func doneAction() {
 		
