@@ -14,7 +14,7 @@ Unfortunately <i>Apple</i> doesn't provide accessory type property for <i>UIColl
 <b>Manual:</b>
 <pre>
 Copy AssetsPickerController.swift and AssetsPickerGridController.swift to your project.
-Also framework uses CheckMarkView. You can found <a href="https://github.com/maximbilan/CheckMarkView">here</a>.
+Also framework uses CheckMarkView, you can found <a href="https://github.com/maximbilan/CheckMarkView">here</a>.
 </pre>
 
 <b>Cocoapods:</b>
@@ -24,21 +24,15 @@ pod 'SwiftAssetsPickerController'
 
 ## How to use
 
-You can create from code, or setup view in the <i>Storyboard</i>, <i>XIB</i>.
+It's really simple. Just see the example:
 
 <pre>
-let checkMarkView = CheckMarkView()
-</pre>
-
-For controlling you have <i>checked</i> property.
-And <i>style</i> property for unchecked view. There are some styles:
-
-<pre>
-enum CheckMarkStyle: Int {
-    case Nothing
-    case OpenCircle
-    case GrayedOut
+let assetsPickerController = AssetsPickerController()
+assetsPickerController.didSelectAssets = {(assets: Array<PHAsset!>) -> () in
+	println(assets)
 }
+let navigationController = UINavigationController(rootViewController: rootListAssets)
+presentViewController(navigationController, animated: true, completion: nil)
 </pre>
 
 ## License
