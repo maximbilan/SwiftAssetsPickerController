@@ -71,7 +71,6 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 		
 		var thumbnail: UIImageView!
 		var typeIcon: UIImageView!
-		
 		var checkMarkView: CheckMarkView!
 		
 		if cell.contentView.subviews.count == 0 {
@@ -84,6 +83,10 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 			typeIcon.contentMode = .ScaleAspectFill
 			typeIcon.clipsToBounds = true
 			cell.contentView.addSubview(typeIcon)
+			
+			checkMarkView = CheckMarkView(frame: CGRectMake(cell.contentView.frame.size.width - 3 - 20, 3, 20, 20))
+			checkMarkView.backgroundColor = UIColor.clearColor()
+			cell.contentView.addSubview(checkMarkView)
 		}
 		else {
 			thumbnail = cell.contentView.subviews[0] as! UIImageView
@@ -106,6 +109,9 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 				typeIcon.image = UIImage(named: "panorama-icon.png")
 			}
 		}
+
+		//checkMarkView.checked = true
+//		checkMarkView.style
 		
 		cachingImageManager.requestImageForAsset(asset, targetSize: assetGridThumbnailSize, contentMode: PHImageContentMode.AspectFill, options: nil, resultHandler: { (image: UIImage!, info :[NSObject : AnyObject]!) -> Void in
 			if cell.tag == currentTag {
