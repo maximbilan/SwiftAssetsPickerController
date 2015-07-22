@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CheckMarkView: UIView {
+public class CheckMarkView: UIView {
 
 	enum CheckMarkStyle: Int {
 		case Nothing
@@ -39,7 +39,7 @@ class CheckMarkView: UIView {
 	private var _checked: Bool = false
 	private var _style: CheckMarkStyle = .Nothing
 	
-    override func drawRect(rect: CGRect) {
+    override public func drawRect(rect: CGRect) {
 		super.drawRect(rect)
 		
 		if _checked {
