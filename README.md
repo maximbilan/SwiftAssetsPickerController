@@ -29,7 +29,7 @@ It's really simple. Just see the example:
 <pre>
 let assetsPickerController = AssetsPickerController()
 assetsPickerController.didSelectAssets = {(assets: Array<PHAsset!>) -> () in
-	println(assets)
+    println(assets)
 }
 let navigationController = UINavigationController(rootViewController: rootListAssets)
 presentViewController(navigationController, animated: true, completion: nil)
