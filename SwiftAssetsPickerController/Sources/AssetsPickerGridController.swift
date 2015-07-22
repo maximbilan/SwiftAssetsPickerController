@@ -54,7 +54,7 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 		collectionView?.backgroundColor = UIColor.whiteColor()
 		collectionView?.registerClass(UICollectionViewCell.classForCoder(), forCellWithReuseIdentifier: reuseIdentifier)
 		
-		navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: "doneAction")
+		navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Done", comment: ""), style: UIBarButtonItemStyle.Done, target: self, action: "doneAction")
 		navigationItem.rightBarButtonItem?.enabled = false
 		
 		let scale = UIScreen.mainScreen().scale;

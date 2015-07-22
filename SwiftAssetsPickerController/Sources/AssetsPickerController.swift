@@ -43,9 +43,9 @@ public class AssetsPickerController: UITableViewController, PHPhotoLibraryChange
 		super.viewDidLoad()
 		
 		// Navigation bar
-		navigationItem.title = "Photos"
-		navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: self, action: "cancelAction")
-		navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Done, target: self, action: "doneAction")
+		navigationItem.title = NSLocalizedString("Photos", comment: "")
+		navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: ""), style: UIBarButtonItemStyle.Plain, target: self, action: "cancelAction")
+		navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Done", comment: ""), style: UIBarButtonItemStyle.Done, target: self, action: "doneAction")
 		navigationItem.rightBarButtonItem?.enabled = false
 		
 		// Activity indicator
@@ -149,7 +149,7 @@ public class AssetsPickerController: UITableViewController, PHPhotoLibraryChange
 		let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: reuseIdentifier)
 		
 		cell.imageView?.image = items[indexPath.row].image
-		cell.textLabel?.text = items[indexPath.row].title
+		cell.textLabel?.text = NSLocalizedString(items[indexPath.row].title, comment: "")
 		
 		return cell
 	}
