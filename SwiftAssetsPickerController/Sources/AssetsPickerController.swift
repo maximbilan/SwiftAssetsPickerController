@@ -176,14 +176,14 @@ public class AssetsPickerController: UITableViewController, PHPhotoLibraryChange
 	
 	// MARK: PHPhotoLibraryChangeObserver
 	
-	public func photoLibraryDidChange(changeInstance: PHChange!) {
+	public func photoLibraryDidChange(changeInstance: PHChange) {
 		loadData()
 	}
 	
 	// MARK: Other
 	
 	func assetsCountFromCollection(collection: PHAssetCollection?) -> Int {
-		let fetchResult = (collection == nil) ? PHAsset.fetchAssetsWithMediaType(.Image, options: nil) : PHAsset.fetchAssetsInAssetCollection(collection, options: nil)
+		let fetchResult = (collection == nil) ? PHAsset.fetchAssetsWithMediaType(.Image, options: nil) : PHAsset.fetchAssetsInAssetCollection(collection!, options: nil)
 		return fetchResult.count
 	}
 	
@@ -194,7 +194,7 @@ public class AssetsPickerController: UITableViewController, PHPhotoLibraryChange
 		let fetchOptions = PHFetchOptions()
 		fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
 		
-		let fetchResult = (collection == nil) ? PHAsset.fetchAssetsWithMediaType(.Image, options: fetchOptions) : PHAsset.fetchAssetsInAssetCollection(collection, options: fetchOptions)
+		let fetchResult = (collection == nil) ? PHAsset.fetchAssetsWithMediaType(.Image, options: fetchOptions) : PHAsset.fetchAssetsInAssetCollection(collection!, options: fetchOptions)
 		if let lastAsset:PHAsset = fetchResult.lastObject as? PHAsset {
 			
 			let imageRequestOptions = PHImageRequestOptions()
@@ -211,7 +211,7 @@ public class AssetsPickerController: UITableViewController, PHPhotoLibraryChange
 			
 			imageRequestOptions.normalizedCropRect = cropRect
 			
-			PHImageManager.defaultManager().requestImageForAsset(lastAsset, targetSize: retinaSquare, contentMode: PHImageContentMode.AspectFit, options: imageRequestOptions, resultHandler: { (image: UIImage!, info :[NSObject : AnyObject]!) -> Void in
+			PHImageManager.defaultManager().requestImageForAsset(lastAsset, targetSize: retinaSquare, contentMode: PHImageContentMode.AspectFit, options: imageRequestOptions, resultHandler: { (image: UIImage?, info :[NSObject : AnyObject]?) -> Void in
 				returnImage = image
 			})
 		}

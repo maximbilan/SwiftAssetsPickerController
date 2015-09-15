@@ -40,7 +40,7 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 		super.init(collectionViewLayout: layout)
 	}
 
-	required init(coder aDecoder: NSCoder) {
+	required init?(coder aDecoder: NSCoder) {
 	    fatalError("init(coder:) has not been implemented")
 	}
 	
@@ -61,7 +61,7 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 		let cellSize = flowLayout.itemSize
 		assetGridThumbnailSize = CGSizeMake(cellSize.width * scale, cellSize.height * scale);
 		
-		let assetsFetchResult = (collection == nil) ? PHAsset.fetchAssetsWithMediaType(.Image, options: nil) : PHAsset.fetchAssetsInAssetCollection(collection, options: nil)
+		let assetsFetchResult = (collection == nil) ? PHAsset.fetchAssetsWithMediaType(.Image, options: nil) : PHAsset.fetchAssetsInAssetCollection(collection!, options: nil)
 		assets = assetsFetchResult.objectsAtIndexes(NSIndexSet(indexesInRange: NSMakeRange(0, assetsFetchResult.count))) as! [PHAsset]
 	}
 	
@@ -72,7 +72,7 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 	}
 	
 	override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-		let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! UICollectionViewCell
+		let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) 
 		cell.backgroundColor = UIColor.blackColor()
 		
 		let currentTag = cell.tag + 1
@@ -123,7 +123,7 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 
 		checkMarkView.checked = selectedIndexes.contains(indexPath.row)
 		
-		cachingImageManager.requestImageForAsset(asset, targetSize: assetGridThumbnailSize, contentMode: PHImageContentMode.AspectFill, options: nil, resultHandler: { (image: UIImage!, info :[NSObject : AnyObject]!) -> Void in
+		cachingImageManager.requestImageForAsset(asset, targetSize: assetGridThumbnailSize, contentMode: PHImageContentMode.AspectFill, options: nil, resultHandler: { (image: UIImage?, info :[NSObject : AnyObject]?) -> Void in
 			if cell.tag == currentTag {
 				thumbnail.image = image
 			}
