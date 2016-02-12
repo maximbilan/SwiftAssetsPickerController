@@ -17,7 +17,7 @@ Copy AssetsPickerController.swift and AssetsPickerGridController.swift to your p
 Also framework uses CheckMarkView, you can found <a href="https://github.com/maximbilan/CheckMarkView">here</a>.
 </pre>
 
-<b>Cocoapods:</b>
+<b>CocoaPods:</b>
 <pre>
 pod 'SwiftAssetsPickerController'
 </pre>
