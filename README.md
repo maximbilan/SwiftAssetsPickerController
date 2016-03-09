@@ -11,15 +11,15 @@ Simple assets picker controller based on iOS 8 Photos framework. Supports iCloud
 
 # Installation
 
+<b>CocoaPods:</b>
+<pre>
+pod 'SwiftAssetsPickerController'
+</pre>
+
 <b>Manual:</b>
 <pre>
 Copy AssetsPickerController.swift and AssetsPickerGridController.swift to your project.
 Also framework uses CheckMarkView, you can found <a href="https://github.com/maximbilan/CheckMarkView">here</a>.
-</pre>
-
-<b>CocoaPods:</b>
-<pre>
-pod 'SwiftAssetsPickerController'
 </pre>
 
 ## How to use
