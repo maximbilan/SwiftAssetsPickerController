@@ -44,8 +44,8 @@ public class AssetsPickerController: UITableViewController, PHPhotoLibraryChange
 		
 		// Navigation bar
 		navigationItem.title = NSLocalizedString("Photos", comment: "")
-		navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: ""), style: UIBarButtonItemStyle.Plain, target: self, action: "cancelAction")
-		navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Done", comment: ""), style: UIBarButtonItemStyle.Done, target: self, action: "doneAction")
+		navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: ""), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(AssetsPickerController.cancelAction))
+		navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Done", comment: ""), style: UIBarButtonItemStyle.Done, target: self, action: #selector(AssetsPickerController.doneAction))
 		navigationItem.rightBarButtonItem?.enabled = false
 		
 		// Activity indicator
@@ -86,7 +86,7 @@ public class AssetsPickerController: UITableViewController, PHPhotoLibraryChange
 			}
 			
 			let smartAlbums = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.SmartAlbum, subtype: PHAssetCollectionSubtype.AlbumRegular, options: nil)
-			for var i: Int = 0; i < smartAlbums.count; ++i {
+			for i: Int in 0 ..< smartAlbums.count {
 				if let smartAlbum = smartAlbums[i] as? PHAssetCollection {
 					var item: RootListItem? = nil
 					
@@ -120,7 +120,7 @@ public class AssetsPickerController: UITableViewController, PHPhotoLibraryChange
 			}
 			
 			let topLevelUserCollections = PHCollectionList.fetchTopLevelUserCollectionsWithOptions(nil)
-			for var i: Int = 0; i < topLevelUserCollections.count; ++i {
+			for i: Int in 0 ..< topLevelUserCollections.count {
 				if let userCollection = topLevelUserCollections[i] as? PHAssetCollection {
 					let assetsCount = self.assetsCountFromCollection(userCollection)
 					if assetsCount == 0 {
