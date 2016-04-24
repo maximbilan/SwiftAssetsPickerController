@@ -18,8 +18,8 @@ pod 'SwiftAssetsPickerController'
 
 <b>Manual:</b>
 <pre>
-Copy AssetsPickerController.swift and AssetsPickerGridController.swift to your project.
-Also framework uses CheckMarkView, you can found <a href="https://github.com/maximbilan/CheckMarkView">here</a>.
+Copy <i>AssetsPickerController.swift</i> and <i>AssetsPickerGridController.swift</i> to your project.
+Also framework uses <i>CheckMarkView</i>, you can found <a href="https://github.com/maximbilan/CheckMarkView">here</a>.
 </pre>
 
 ## How to use
