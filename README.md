@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/cocoapods/l/SwiftAssetsPickerController.svg?style=flat)](http://cocoadocs.org/docsets/SwiftAssetsPickerController)
 [![Platform](https://img.shields.io/cocoapods/p/SwiftAssetsPickerController.svg?style=flat)](http://cocoadocs.org/docsets/SwiftAssetsPickerController)
 
-Simple assets picker controller based on <i>iOS 8</i> Photos framework. Supports iCloud photos and videos. It's written in Swift.
+Simple assets picker controller based on <i>iOS 8</i> <i>Photos</i> framework. Supports iCloud photos and videos. It's written in Swift.
 
 ![alt tag](https://raw.github.com/maximbilan/SwiftAssetsPickerController/master/img/img1.png)
 ![alt tag](https://raw.github.com/maximbilan/SwiftAssetsPickerController/master/img/img2.png)
