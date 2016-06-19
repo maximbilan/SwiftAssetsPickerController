@@ -57,9 +57,9 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 		navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Done", comment: ""), style: UIBarButtonItemStyle.Done, target: self, action: #selector(AssetsPickerGridController.doneAction))
 		navigationItem.rightBarButtonItem?.enabled = false
 		
-		let scale = UIScreen.mainScreen().scale;
+		let scale = UIScreen.mainScreen().scale
 		let cellSize = flowLayout.itemSize
-		assetGridThumbnailSize = CGSizeMake(cellSize.width * scale, cellSize.height * scale);
+		assetGridThumbnailSize = CGSizeMake(cellSize.width * scale, cellSize.height * scale)
 		
 		let assetsFetchResult = (collection == nil) ? PHAsset.fetchAssetsWithMediaType(.Image, options: nil) : PHAsset.fetchAssetsInAssetCollection(collection!, options: nil)
 		assets = assetsFetchResult.objectsAtIndexes(NSIndexSet(indexesInRange: NSMakeRange(0, assetsFetchResult.count))) as! [PHAsset]
