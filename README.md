@@ -22,7 +22,7 @@ Copy <i>AssetsPickerController.swift</i> and <i>AssetsPickerGridController.swift
 Also framework uses <i>CheckMarkView</i>, you can found <a href="https://github.com/maximbilan/CheckMarkView">here</a>.
 </pre>
 
-## How to use
+## Using
 
 It's really simple. Just see the example:
 
