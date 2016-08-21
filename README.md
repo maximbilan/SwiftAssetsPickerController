@@ -22,6 +22,8 @@ Copy <i>AssetsPickerController.swift</i> and <i>AssetsPickerGridController.swift
 Also framework uses <i>CheckMarkView</i>, you can found <a href="https://github.com/maximbilan/CheckMarkView">here</a>.
 </pre>
 
+For running in Xcode 8 Beta please use swift-3.0 branch.
+
 ## Using
 
 It's really simple. Just see the example:
