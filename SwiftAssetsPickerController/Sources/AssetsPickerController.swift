@@ -74,8 +74,7 @@ open class AssetsPickerController: UITableViewController, PHPhotoLibraryChangeOb
 		tableView.isUserInteractionEnabled = false
 		activityIndicator.startAnimating()
 		
-		let priority = DispatchQueue.GlobalQueuePriority.default
-		DispatchQueue.global(priority: priority).async {
+		DispatchQueue.global(qos: .default).async {
 		
 			self.items.removeAll(keepingCapacity: false)
 			
@@ -87,35 +86,34 @@ open class AssetsPickerController: UITableViewController, PHPhotoLibraryChangeOb
 			
 			let smartAlbums = PHAssetCollection.fetchAssetCollections(with: PHAssetCollectionType.smartAlbum, subtype: PHAssetCollectionSubtype.albumRegular, options: nil)
 			for i: Int in 0 ..< smartAlbums.count {
-				if let smartAlbum = smartAlbums[i] as? PHAssetCollection {
-					var item: RootListItem? = nil
+				let smartAlbum = smartAlbums[i]
+				var item: RootListItem? = nil
+				
+				let assetsCount = self.assetsCountFromCollection(smartAlbum)
+				if assetsCount == 0 {
+					continue
+				}
+				
+				switch smartAlbum.assetCollectionSubtype {
+				case .smartAlbumFavorites:
+					item = RootListItem(title: AlbumType.titles[AlbumType.favorites.rawValue], albumType: AlbumType.favorites, image: self.lastImageFromCollection(smartAlbum), collection: smartAlbum)
+					break
+				case .smartAlbumPanoramas:
+					item = RootListItem(title: AlbumType.titles[AlbumType.panoramas.rawValue], albumType: AlbumType.panoramas, image: self.lastImageFromCollection(smartAlbum), collection: smartAlbum)
+					break
+				case .smartAlbumVideos:
+					item = RootListItem(title: AlbumType.titles[AlbumType.videos.rawValue], albumType: AlbumType.videos, image: self.lastImageFromCollection(smartAlbum), collection: smartAlbum)
+					break
+				case .smartAlbumTimelapses:
+					item = RootListItem(title: AlbumType.titles[AlbumType.timeLapse.rawValue], albumType: AlbumType.timeLapse, image: self.lastImageFromCollection(smartAlbum), collection: smartAlbum)
+					break
 					
-					let assetsCount = self.assetsCountFromCollection(smartAlbum)
-					if assetsCount == 0 {
-						continue
-					}
-					
-					switch smartAlbum.assetCollectionSubtype {
-					case .smartAlbumFavorites:
-						item = RootListItem(title: AlbumType.titles[AlbumType.favorites.rawValue], albumType: AlbumType.favorites, image: self.lastImageFromCollection(smartAlbum), collection: smartAlbum)
-						break
-					case .smartAlbumPanoramas:
-						item = RootListItem(title: AlbumType.titles[AlbumType.panoramas.rawValue], albumType: AlbumType.panoramas, image: self.lastImageFromCollection(smartAlbum), collection: smartAlbum)
-						break
-					case .smartAlbumVideos:
-						item = RootListItem(title: AlbumType.titles[AlbumType.videos.rawValue], albumType: AlbumType.videos, image: self.lastImageFromCollection(smartAlbum), collection: smartAlbum)
-						break
-					case .smartAlbumTimelapses:
-						item = RootListItem(title: AlbumType.titles[AlbumType.timeLapse.rawValue], albumType: AlbumType.timeLapse, image: self.lastImageFromCollection(smartAlbum), collection: smartAlbum)
-						break
-						
-					default:
-						break
-					}
-					
-					if item != nil {
-						self.items.append(item!)
-					}
+				default:
+					break
+				}
+				
+				if item != nil {
+					self.items.append(item!)
 				}
 			}
 			
