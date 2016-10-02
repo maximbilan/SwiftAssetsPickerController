@@ -1,10 +1,12 @@
 PODS:
-  - CheckMarkView (0.2.3)
+  - CheckMarkView (0.2.4)
 
 DEPENDENCIES:
-  - CheckMarkView
+  - CheckMarkView (~> 0.2.4)
 
 SPEC CHECKSUMS:
-  CheckMarkView: 65180ff3745830b86d5e99940172f24c360d6d3b
+  CheckMarkView: a7b3dc4cb5f12b48f59d1b491b15945ffb5a8aca
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: d73fc22cd3412784f7c3eb8df16e88b439253a40
+
+COCOAPODS: 1.1.0.rc.2

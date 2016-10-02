@@ -67,11 +67,11 @@ public class CheckMarkView: UIView {
 		let group = CGRectMake(CGRectGetMinX(frame) + 3, CGRectGetMinY(frame) + 3, CGRectGetWidth(frame) - 6, CGRectGetHeight(frame) - 6)
 		let checkedOvalPath = UIBezierPath(ovalInRect: CGRectMake(CGRectGetMinX(group) + floor(CGRectGetWidth(group) * 0.00000 + 0.5), CGRectGetMinY(group) + floor(CGRectGetHeight(group) * 0.00000 + 0.5), floor(CGRectGetWidth(group) * 1.00000 + 0.5) - floor(CGRectGetWidth(group) * 0.00000 + 0.5), floor(CGRectGetHeight(group) * 1.00000 + 0.5) - floor(CGRectGetHeight(group) * 0.00000 + 0.5)))
 		
-		CGContextSaveGState(context)
-		CGContextSetShadowWithColor(context, shadowOffset, shadowBlurRadius, shadow.CGColor)
+		CGContextSaveGState(context!)
+		CGContextSetShadowWithColor(context!, shadowOffset, shadowBlurRadius, shadow.CGColor)
 		checkmarkBlue.setFill()
 		checkedOvalPath.fill()
-		CGContextRestoreGState(context)
+		CGContextRestoreGState(context!)
 		
 		UIColor.whiteColor().setStroke()
 		checkedOvalPath.lineWidth = 1
@@ -102,16 +102,16 @@ public class CheckMarkView: UIView {
 		let group = CGRectMake(CGRectGetMinX(frame) + 3, CGRectGetMinY(frame) + 3, CGRectGetWidth(frame) - 6, CGRectGetHeight(frame) - 6)
 		let emptyOvalPath = UIBezierPath(ovalInRect: CGRectMake(CGRectGetMinX(group) + floor(CGRectGetWidth(group) * 0.00000 + 0.5), CGRectGetMinY(group) + floor(CGRectGetHeight(group) * 0.00000 + 0.5), floor(CGRectGetWidth(group) * 1.00000 + 0.5) - floor(CGRectGetWidth(group) * 0.00000 + 0.5), floor(CGRectGetHeight(group) * 1.00000 + 0.5) - floor(CGRectGetHeight(group) * 0.00000 + 0.5)))
 		
-		CGContextSaveGState(context)
-		CGContextSetShadowWithColor(context, shadow2Offset, shadow2BlurRadius, shadow2.CGColor)
-		CGContextRestoreGState(context)
+		CGContextSaveGState(context!)
+		CGContextSetShadowWithColor(context!, shadow2Offset, shadow2BlurRadius, shadow2.CGColor)
+		CGContextRestoreGState(context!)
 		
-		CGContextSaveGState(context)
-		CGContextSetShadowWithColor(context, shadowOffset, shadowBlurRadius, shadow.CGColor)
+		CGContextSaveGState(context!)
+		CGContextSetShadowWithColor(context!, shadowOffset, shadowBlurRadius, shadow.CGColor)
 		UIColor.whiteColor().setStroke()
 		emptyOvalPath.lineWidth = 1
 		emptyOvalPath.stroke()
-		CGContextRestoreGState(context)
+		CGContextRestoreGState(context!)
 	}
 	
 	func drawRectGrayedOut(rect: CGRect) {
@@ -126,11 +126,11 @@ public class CheckMarkView: UIView {
 		let group = CGRectMake(CGRectGetMinX(frame) + 3, CGRectGetMinY(frame) + 3, CGRectGetWidth(frame) - 6, CGRectGetHeight(frame) - 6)
 		let uncheckedOvalPath = UIBezierPath(ovalInRect: CGRectMake(CGRectGetMinX(group) + floor(CGRectGetWidth(group) * 0.00000 + 0.5), CGRectGetMinY(group) + floor(CGRectGetHeight(group) * 0.00000 + 0.5), floor(CGRectGetWidth(group) * 1.00000 + 0.5) - floor(CGRectGetWidth(group) * 0.00000 + 0.5), floor(CGRectGetHeight(group) * 1.00000 + 0.5) - floor(CGRectGetHeight(group) * 0.00000 + 0.5)))
 		
-		CGContextSaveGState(context)
-		CGContextSetShadowWithColor(context, shadowOffset, shadowBlurRadius, shadow.CGColor)
+		CGContextSaveGState(context!)
+		CGContextSetShadowWithColor(context!, shadowOffset, shadowBlurRadius, shadow.CGColor)
 		grayTranslucent.setFill()
 		uncheckedOvalPath.fill()
-		CGContextRestoreGState(context)
+		CGContextRestoreGState(context!)
 		
 		UIColor.whiteColor().setStroke()
 		uncheckedOvalPath.lineWidth = 1
