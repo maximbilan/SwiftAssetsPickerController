@@ -9,16 +9,16 @@
 import UIKit
 import Photos
 
-public class AssetsPickerController: UITableViewController, PHPhotoLibraryChangeObserver {
+open class AssetsPickerController: UITableViewController, PHPhotoLibraryChangeObserver {
 	
 	enum AlbumType: Int {
-		case AllPhotos
-		case Favorites
-		case Panoramas
-		case Videos
-		case TimeLapse
-		case RecentlyDeleted
-		case UserAlbum
+		case allPhotos
+		case favorites
+		case panoramas
+		case videos
+		case timeLapse
+		case recentlyDeleted
+		case userAlbum
 		
 		static let titles = ["All Photos", "Favorites", "Panoramas", "Videos", "Time Lapse", "Recently Deleted", "User Album"]
 	}
@@ -30,26 +30,26 @@ public class AssetsPickerController: UITableViewController, PHPhotoLibraryChange
 		var collection: PHAssetCollection?
 	}
 	
-	private var items: Array<RootListItem>!
-	private var activityIndicator: UIActivityIndicatorView!
-	private let thumbnailSize = CGSizeMake(64, 64)
-	private let reuseIdentifier = "RootListAssetsCell"
+	fileprivate var items: Array<RootListItem>!
+	fileprivate var activityIndicator: UIActivityIndicatorView!
+	fileprivate let thumbnailSize = CGSize(width: 64, height: 64)
+	fileprivate let reuseIdentifier = "RootListAssetsCell"
 	
-	public var didSelectAssets: ((Array<PHAsset!>) -> ())?
+	open var didSelectAssets: ((Array<PHAsset?>) -> ())?
 	
 	// MARK: View controllers methods
 	
-	override public func viewDidLoad() {
+	override open func viewDidLoad() {
 		super.viewDidLoad()
 		
 		// Navigation bar
 		navigationItem.title = NSLocalizedString("Photos", comment: "")
-		navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: ""), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(AssetsPickerController.cancelAction))
-		navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Done", comment: ""), style: UIBarButtonItemStyle.Done, target: self, action: #selector(AssetsPickerController.doneAction))
-		navigationItem.rightBarButtonItem?.enabled = false
+		navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: ""), style: UIBarButtonItemStyle.plain, target: self, action: #selector(AssetsPickerController.cancelAction))
+		navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Done", comment: ""), style: UIBarButtonItemStyle.done, target: self, action: #selector(AssetsPickerController.doneAction))
+		navigationItem.rightBarButtonItem?.isEnabled = false
 		
 		// Activity indicator
-		activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+		activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
 		activityIndicator.hidesWhenStopped = true
 		activityIndicator.center = self.view.center
 		self.view.addSubview(activityIndicator)
@@ -58,34 +58,34 @@ public class AssetsPickerController: UITableViewController, PHPhotoLibraryChange
 		items = Array()
 		
 		// Notifications
-		PHPhotoLibrary.sharedPhotoLibrary().registerChangeObserver(self)
+		PHPhotoLibrary.shared().register(self)
 		
 		// Load photo library
 		loadData()
 	}
 	
 	deinit {
-		PHPhotoLibrary.sharedPhotoLibrary().unregisterChangeObserver(self)
+		PHPhotoLibrary.shared().unregisterChangeObserver(self)
 	}
 	
 	// MARK: Data loading
 	
 	func loadData() {
-		tableView.userInteractionEnabled = false
+		tableView.isUserInteractionEnabled = false
 		activityIndicator.startAnimating()
 		
-		let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-		dispatch_async(dispatch_get_global_queue(priority, 0)) {
+		let priority = DispatchQueue.GlobalQueuePriority.default
+		DispatchQueue.global(priority: priority).async {
 		
-			self.items.removeAll(keepCapacity: false)
+			self.items.removeAll(keepingCapacity: false)
 			
-			let allPhotosItem = RootListItem(title: AlbumType.titles[AlbumType.AllPhotos.rawValue], albumType: AlbumType.AllPhotos, image: self.lastImageFromCollection(nil), collection: nil)
+			let allPhotosItem = RootListItem(title: AlbumType.titles[AlbumType.allPhotos.rawValue], albumType: AlbumType.allPhotos, image: self.lastImageFromCollection(nil), collection: nil)
 			let assetsCount = self.assetsCountFromCollection(nil)
 			if assetsCount > 0 {
 				self.items.append(allPhotosItem)
 			}
 			
-			let smartAlbums = PHAssetCollection.fetchAssetCollectionsWithType(PHAssetCollectionType.SmartAlbum, subtype: PHAssetCollectionSubtype.AlbumRegular, options: nil)
+			let smartAlbums = PHAssetCollection.fetchAssetCollections(with: PHAssetCollectionType.smartAlbum, subtype: PHAssetCollectionSubtype.albumRegular, options: nil)
 			for i: Int in 0 ..< smartAlbums.count {
 				if let smartAlbum = smartAlbums[i] as? PHAssetCollection {
 					var item: RootListItem? = nil
@@ -96,17 +96,17 @@ public class AssetsPickerController: UITableViewController, PHPhotoLibraryChange
 					}
 					
 					switch smartAlbum.assetCollectionSubtype {
-					case .SmartAlbumFavorites:
-						item = RootListItem(title: AlbumType.titles[AlbumType.Favorites.rawValue], albumType: AlbumType.Favorites, image: self.lastImageFromCollection(smartAlbum), collection: smartAlbum)
+					case .smartAlbumFavorites:
+						item = RootListItem(title: AlbumType.titles[AlbumType.favorites.rawValue], albumType: AlbumType.favorites, image: self.lastImageFromCollection(smartAlbum), collection: smartAlbum)
 						break
-					case .SmartAlbumPanoramas:
-						item = RootListItem(title: AlbumType.titles[AlbumType.Panoramas.rawValue], albumType: AlbumType.Panoramas, image: self.lastImageFromCollection(smartAlbum), collection: smartAlbum)
+					case .smartAlbumPanoramas:
+						item = RootListItem(title: AlbumType.titles[AlbumType.panoramas.rawValue], albumType: AlbumType.panoramas, image: self.lastImageFromCollection(smartAlbum), collection: smartAlbum)
 						break
-					case .SmartAlbumVideos:
-						item = RootListItem(title: AlbumType.titles[AlbumType.Videos.rawValue], albumType: AlbumType.Videos, image: self.lastImageFromCollection(smartAlbum), collection: smartAlbum)
+					case .smartAlbumVideos:
+						item = RootListItem(title: AlbumType.titles[AlbumType.videos.rawValue], albumType: AlbumType.videos, image: self.lastImageFromCollection(smartAlbum), collection: smartAlbum)
 						break
-					case .SmartAlbumTimelapses:
-						item = RootListItem(title: AlbumType.titles[AlbumType.TimeLapse.rawValue], albumType: AlbumType.TimeLapse, image: self.lastImageFromCollection(smartAlbum), collection: smartAlbum)
+					case .smartAlbumTimelapses:
+						item = RootListItem(title: AlbumType.titles[AlbumType.timeLapse.rawValue], albumType: AlbumType.timeLapse, image: self.lastImageFromCollection(smartAlbum), collection: smartAlbum)
 						break
 						
 					default:
@@ -119,55 +119,55 @@ public class AssetsPickerController: UITableViewController, PHPhotoLibraryChange
 				}
 			}
 			
-			let topLevelUserCollections = PHCollectionList.fetchTopLevelUserCollectionsWithOptions(nil)
+			let topLevelUserCollections = PHCollectionList.fetchTopLevelUserCollections(with: nil)
 			for i: Int in 0 ..< topLevelUserCollections.count {
 				if let userCollection = topLevelUserCollections[i] as? PHAssetCollection {
 					let assetsCount = self.assetsCountFromCollection(userCollection)
 					if assetsCount == 0 {
 						continue
 					}
-					let item = RootListItem(title: userCollection.localizedTitle, albumType: AlbumType.UserAlbum, image: self.lastImageFromCollection(userCollection), collection: userCollection)
+					let item = RootListItem(title: userCollection.localizedTitle, albumType: AlbumType.userAlbum, image: self.lastImageFromCollection(userCollection), collection: userCollection)
 					self.items.append(item)
 				}
 			}
 			
-			dispatch_async(dispatch_get_main_queue()) {
+			DispatchQueue.main.async {
 				self.tableView.reloadData()
 				self.activityIndicator.stopAnimating()
-				self.tableView.userInteractionEnabled = true
+				self.tableView.isUserInteractionEnabled = true
 			}
 		}
 	}
 	
 	// MARK: UITableViewDataSource
 	
-	override public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	override open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return items.count
 	}
 	
-	override public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: reuseIdentifier)
+	override open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: reuseIdentifier)
 		
-		cell.imageView?.image = items[indexPath.row].image
-		cell.textLabel?.text = NSLocalizedString(items[indexPath.row].title, comment: "")
+		cell.imageView?.image = items[(indexPath as NSIndexPath).row].image
+		cell.textLabel?.text = NSLocalizedString(items[(indexPath as NSIndexPath).row].title, comment: "")
 		
 		return cell
 	}
 	
 	// MARK: UITableViewDelegate
 	
-	override public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+	override open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		let assetsGrid = AssetsPickerGridController(collectionViewLayout: UICollectionViewLayout())
-		assetsGrid.collection = items[indexPath.row].collection
+		assetsGrid.collection = items[(indexPath as NSIndexPath).row].collection
 		assetsGrid.didSelectAssets = didSelectAssets
-		assetsGrid.title = items[indexPath.row].title
+		assetsGrid.title = items[(indexPath as NSIndexPath).row].title
 		navigationController?.pushViewController(assetsGrid, animated: true)
 	}
 	
 	// MARK: Navigation bar actions
 	
 	func cancelAction() {
-		dismissViewControllerAnimated(true, completion: nil)
+		dismiss(animated: true, completion: nil)
 	}
 	
 	func doneAction() {
@@ -176,42 +176,42 @@ public class AssetsPickerController: UITableViewController, PHPhotoLibraryChange
 	
 	// MARK: PHPhotoLibraryChangeObserver
 	
-	public func photoLibraryDidChange(changeInstance: PHChange) {
+	open func photoLibraryDidChange(_ changeInstance: PHChange) {
 		loadData()
 	}
 	
 	// MARK: Other
 	
-	func assetsCountFromCollection(collection: PHAssetCollection?) -> Int {
-		let fetchResult = (collection == nil) ? PHAsset.fetchAssetsWithMediaType(.Image, options: nil) : PHAsset.fetchAssetsInAssetCollection(collection!, options: nil)
+	func assetsCountFromCollection(_ collection: PHAssetCollection?) -> Int {
+		let fetchResult = (collection == nil) ? PHAsset.fetchAssets(with: .image, options: nil) : PHAsset.fetchAssets(in: collection!, options: nil)
 		return fetchResult.count
 	}
 	
-	func lastImageFromCollection(collection: PHAssetCollection?) -> UIImage? {
+	func lastImageFromCollection(_ collection: PHAssetCollection?) -> UIImage? {
 		
 		var returnImage: UIImage? = nil
 		
 		let fetchOptions = PHFetchOptions()
 		fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
 		
-		let fetchResult = (collection == nil) ? PHAsset.fetchAssetsWithMediaType(.Image, options: fetchOptions) : PHAsset.fetchAssetsInAssetCollection(collection!, options: fetchOptions)
-		if let lastAsset:PHAsset = fetchResult.lastObject as? PHAsset {
+		let fetchResult = (collection == nil) ? PHAsset.fetchAssets(with: .image, options: fetchOptions) : PHAsset.fetchAssets(in: collection!, options: fetchOptions)
+		if let lastAsset = fetchResult.lastObject {
 			
 			let imageRequestOptions = PHImageRequestOptions()
-			imageRequestOptions.deliveryMode = PHImageRequestOptionsDeliveryMode.FastFormat
-			imageRequestOptions.resizeMode = PHImageRequestOptionsResizeMode.Exact
-			imageRequestOptions.synchronous = true
+			imageRequestOptions.deliveryMode = PHImageRequestOptionsDeliveryMode.fastFormat
+			imageRequestOptions.resizeMode = PHImageRequestOptionsResizeMode.exact
+			imageRequestOptions.isSynchronous = true
 			
-			let retinaScale = UIScreen.mainScreen().scale
-			let retinaSquare = CGSizeMake(thumbnailSize.width * retinaScale, thumbnailSize.height * retinaScale)
+			let retinaScale = UIScreen.main.scale
+			let retinaSquare = CGSize(width: thumbnailSize.width * retinaScale, height: thumbnailSize.height * retinaScale)
 			
 			let cropSideLength = min(lastAsset.pixelWidth, lastAsset.pixelHeight)
-			let square = CGRectMake(CGFloat(0), CGFloat(0), CGFloat(cropSideLength), CGFloat(cropSideLength))
-			let cropRect = CGRectApplyAffineTransform(square, CGAffineTransformMakeScale(1.0 / CGFloat(lastAsset.pixelWidth), 1.0 / CGFloat(lastAsset.pixelHeight)))
+			let square = CGRect(x: CGFloat(0), y: CGFloat(0), width: CGFloat(cropSideLength), height: CGFloat(cropSideLength))
+			let cropRect = square.applying(CGAffineTransform(scaleX: 1.0 / CGFloat(lastAsset.pixelWidth), y: 1.0 / CGFloat(lastAsset.pixelHeight)))
 			
 			imageRequestOptions.normalizedCropRect = cropRect
 			
-			PHImageManager.defaultManager().requestImageForAsset(lastAsset, targetSize: retinaSquare, contentMode: PHImageContentMode.AspectFit, options: imageRequestOptions, resultHandler: { (image: UIImage?, info :[NSObject : AnyObject]?) -> Void in
+			PHImageManager.default().requestImage(for: lastAsset, targetSize: retinaSquare, contentMode: PHImageContentMode.aspectFit, options: imageRequestOptions, resultHandler: { (image: UIImage?, info :[AnyHashable: Any]?) -> Void in
 				returnImage = image
 			})
 		}

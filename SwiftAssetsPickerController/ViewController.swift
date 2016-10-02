@@ -21,13 +21,13 @@ class ViewController: UIViewController {
 		// Dispose of any resources that can be recreated.
 	}
 
-	@IBAction func openAssetsAction(sender: UIButton) {
+	@IBAction func openAssetsAction(_ sender: UIButton) {
 		let rootListAssets = AssetsPickerController()
-		rootListAssets.didSelectAssets = {(assets: Array<PHAsset!>) -> () in
+		rootListAssets.didSelectAssets = {(assets: Array<PHAsset?>) -> () in
 			print(assets)
 		}
 		let navigationController = UINavigationController(rootViewController: rootListAssets)
-		presentViewController(navigationController, animated: true, completion: nil)
+		present(navigationController, animated: true, completion: nil)
 	}
 	
 }

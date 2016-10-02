@@ -12,25 +12,25 @@ import CheckMarkView
 
 class AssetsPickerGridController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 	
-	private var assetGridThumbnailSize: CGSize = CGSizeMake(0, 0)
-	private let reuseIdentifier = "AssetsGridCell"
-	private let typeIconSize = CGSizeMake(20, 20)
-	private let checkMarkSize = CGSizeMake(28, 28)
-	private let iconOffset: CGFloat = 3
-	private let collectionViewEdgeInset: CGFloat = 2
-	private let assetsInRow: CGFloat = UIDevice.currentDevice().userInterfaceIdiom == .Phone ? 4 : 8
+	fileprivate var assetGridThumbnailSize: CGSize = CGSize(width: 0, height: 0)
+	fileprivate let reuseIdentifier = "AssetsGridCell"
+	fileprivate let typeIconSize = CGSize(width: 20, height: 20)
+	fileprivate let checkMarkSize = CGSize(width: 28, height: 28)
+	fileprivate let iconOffset: CGFloat = 3
+	fileprivate let collectionViewEdgeInset: CGFloat = 2
+	fileprivate let assetsInRow: CGFloat = UIDevice.current.userInterfaceIdiom == .phone ? 4 : 8
 	
 	let cachingImageManager = PHCachingImageManager()
 	var collection: PHAssetCollection?
 	var selectedIndexes: Set<Int> = Set()
-	var didSelectAssets: ((Array<PHAsset!>) -> ())?
-	private var assets: [PHAsset]! {
+	var didSelectAssets: ((Array<PHAsset?>) -> ())?
+	fileprivate var assets: [PHAsset]! {
 		willSet {
 			cachingImageManager.stopCachingImagesForAllAssets()
 		}
 		
 		didSet {
-			cachingImageManager.startCachingImagesForAssets(self.assets, targetSize: PHImageManagerMaximumSize, contentMode: PHImageContentMode.AspectFill, options: nil)
+			cachingImageManager.startCachingImages(for: self.assets, targetSize: PHImageManagerMaximumSize, contentMode: PHImageContentMode.aspectFill, options: nil)
 		}
 	}
 	
@@ -48,32 +48,32 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 		super.viewDidLoad()
 		
 		let flowLayout = UICollectionViewFlowLayout()
-		flowLayout.scrollDirection = UICollectionViewScrollDirection.Vertical
+		flowLayout.scrollDirection = UICollectionViewScrollDirection.vertical
 		
 		collectionView?.collectionViewLayout = flowLayout
-		collectionView?.backgroundColor = UIColor.whiteColor()
-		collectionView?.registerClass(UICollectionViewCell.classForCoder(), forCellWithReuseIdentifier: reuseIdentifier)
+		collectionView?.backgroundColor = UIColor.white
+		collectionView?.register(UICollectionViewCell.classForCoder(), forCellWithReuseIdentifier: reuseIdentifier)
 		
-		navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Done", comment: ""), style: UIBarButtonItemStyle.Done, target: self, action: #selector(AssetsPickerGridController.doneAction))
-		navigationItem.rightBarButtonItem?.enabled = false
+		navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Done", comment: ""), style: UIBarButtonItemStyle.done, target: self, action: #selector(AssetsPickerGridController.doneAction))
+		navigationItem.rightBarButtonItem?.isEnabled = false
 		
-		let scale = UIScreen.mainScreen().scale
+		let scale = UIScreen.main.scale
 		let cellSize = flowLayout.itemSize
-		assetGridThumbnailSize = CGSizeMake(cellSize.width * scale, cellSize.height * scale)
+		assetGridThumbnailSize = CGSize(width: cellSize.width * scale, height: cellSize.height * scale)
 		
-		let assetsFetchResult = (collection == nil) ? PHAsset.fetchAssetsWithMediaType(.Image, options: nil) : PHAsset.fetchAssetsInAssetCollection(collection!, options: nil)
-		assets = assetsFetchResult.objectsAtIndexes(NSIndexSet(indexesInRange: NSMakeRange(0, assetsFetchResult.count))) as! [PHAsset]
+		let assetsFetchResult = (collection == nil) ? PHAsset.fetchAssets(with: .image, options: nil) : PHAsset.fetchAssets(in: collection!, options: nil)
+		assets = assetsFetchResult.objects(at: IndexSet(integersIn: NSMakeRange(0, assetsFetchResult.count).toRange()!)) 
 	}
 	
 	// MARK: UICollectionViewDataSource
 	
-	override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+	override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		return assets.count
 	}
 	
-	override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-		let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) 
-		cell.backgroundColor = UIColor.blackColor()
+	override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) 
+		cell.backgroundColor = UIColor.black
 		
 		let currentTag = cell.tag + 1
 		cell.tag = currentTag
@@ -84,17 +84,17 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 		
 		if cell.contentView.subviews.count == 0 {
 			thumbnail = UIImageView(frame: cell.contentView.frame)
-			thumbnail.contentMode = .ScaleAspectFill
+			thumbnail.contentMode = .scaleAspectFill
 			thumbnail.clipsToBounds = true
 			cell.contentView.addSubview(thumbnail)
 			
-			typeIcon = UIImageView(frame: CGRectMake(iconOffset, cell.contentView.frame.size.height - iconOffset - typeIconSize.height, typeIconSize.width, typeIconSize.height))
-			typeIcon.contentMode = .ScaleAspectFill
+			typeIcon = UIImageView(frame: CGRect(x: iconOffset, y: cell.contentView.frame.size.height - iconOffset - typeIconSize.height, width: typeIconSize.width, height: typeIconSize.height))
+			typeIcon.contentMode = .scaleAspectFill
 			typeIcon.clipsToBounds = true
 			cell.contentView.addSubview(typeIcon)
 			
-			checkMarkView = CheckMarkView(frame: CGRectMake(cell.contentView.frame.size.width - iconOffset - checkMarkSize.width, iconOffset, checkMarkSize.width, checkMarkSize.height))
-			checkMarkView.backgroundColor = UIColor.clearColor()
+			checkMarkView = CheckMarkView(frame: CGRect(x: cell.contentView.frame.size.width - iconOffset - checkMarkSize.width, y: iconOffset, width: checkMarkSize.width, height: checkMarkSize.height))
+			checkMarkView.backgroundColor = UIColor.clear
 			checkMarkView.style = CheckMarkView.CheckMarkStyle.Nothing
 			cell.contentView.addSubview(checkMarkView)
 		}
@@ -104,26 +104,26 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 			checkMarkView = cell.contentView.subviews[2] as! CheckMarkView
 		}
 		
-		let asset = assets[indexPath.row]
+		let asset = assets[(indexPath as NSIndexPath).row]
 		
 		typeIcon.image = nil
-		if asset.mediaType == .Video {
-			if asset.mediaSubtypes == .VideoTimelapse {
+		if asset.mediaType == .video {
+			if asset.mediaSubtypes == .videoTimelapse {
 				typeIcon.image = UIImage(named: "timelapse-icon.png")
 			}
 			else {
 				typeIcon.image = UIImage(named: "video-icon.png")
 			}
 		}
-		else if asset.mediaType == .Image {
-			if asset.mediaSubtypes == .PhotoPanorama {
+		else if asset.mediaType == .image {
+			if asset.mediaSubtypes == .photoPanorama {
 				typeIcon.image = UIImage(named: "panorama-icon.png")
 			}
 		}
 
 		checkMarkView.checked = selectedIndexes.contains(indexPath.row)
 		
-		cachingImageManager.requestImageForAsset(asset, targetSize: assetGridThumbnailSize, contentMode: PHImageContentMode.AspectFill, options: nil, resultHandler: { (image: UIImage?, info :[NSObject : AnyObject]?) -> Void in
+		cachingImageManager.requestImage(for: asset, targetSize: assetGridThumbnailSize, contentMode: PHImageContentMode.aspectFill, options: nil, resultHandler: { (image: UIImage?, info :[AnyHashable: Any]?) -> Void in
 			if cell.tag == currentTag {
 				thumbnail.image = image
 			}
@@ -134,34 +134,34 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 	
 	// MARK: UICollectionViewDelegate
 	
-	override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-		if selectedIndexes.contains(indexPath.row) {
-			selectedIndexes.remove(indexPath.row)
-			navigationItem.rightBarButtonItem?.enabled = selectedIndexes.count > 0 ? true : false
+	override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		if selectedIndexes.contains((indexPath as NSIndexPath).row) {
+			selectedIndexes.remove((indexPath as NSIndexPath).row)
+			navigationItem.rightBarButtonItem?.isEnabled = selectedIndexes.count > 0 ? true : false
 		}
 		else {
-			navigationItem.rightBarButtonItem?.enabled = true
-			selectedIndexes.insert(indexPath.row)
+			navigationItem.rightBarButtonItem?.isEnabled = true
+			selectedIndexes.insert((indexPath as NSIndexPath).row)
 		}
-		collectionView.reloadItemsAtIndexPaths([indexPath])
+		collectionView.reloadItems(at: [indexPath])
 	}
 	
 	// MARK: UICollectionViewDelegateFlowLayout
 	
-	func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 		let a = (self.view.frame.size.width - assetsInRow * 1 - 2 * collectionViewEdgeInset) / assetsInRow
-		return CGSizeMake(a, a)
+		return CGSize(width: a, height: a)
 	}
 	
-	func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
 		return UIEdgeInsetsMake(collectionViewEdgeInset, collectionViewEdgeInset, collectionViewEdgeInset, collectionViewEdgeInset)
 	}
 	
-	func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
 		return 1
 	}
 	
-	func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
 		return 1
 	}
 	
@@ -169,7 +169,7 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 	
 	func doneAction() {
 		
-		var selectedAssets: Array<PHAsset!> = Array()
+		var selectedAssets: Array<PHAsset?> = Array()
 		for index in selectedIndexes {
 			let asset = assets[index]
 			selectedAssets.append(asset)
@@ -179,7 +179,7 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 			didSelectAssets!(selectedAssets)
 		}
 		
-		navigationController!.dismissViewControllerAnimated(true, completion: nil)
+		navigationController!.dismiss(animated: true, completion: nil)
 	}
 	
 }
