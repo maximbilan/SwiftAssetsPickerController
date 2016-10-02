@@ -11,5 +11,5 @@ s.source       = { :git => "https://github.com/maximbilan/SwiftAssetsPickerContr
 s.source_files = "Classes", "SwiftAssetsPickerController/Sources/**/*.{swift}"
 s.resources	   = "SwiftAssetsPickerController/Resources/*.*"
 s.requires_arc = true
-s.dependency "CheckMarkView", "~> 0.2.4"
+s.dependency "CheckMarkView", "~> 0.3.0"
 end
