@@ -13,7 +13,14 @@ Simple assets picker controller based on <i>iOS 8</i> <i>Photos</i> framework. S
 
 <b>CocoaPods:</b>
 <pre>
-pod 'SwiftAssetsPickerController'
+Swift 2.2:
+pod 'SwiftAssetsPickerController', '~> 0.1.1'
+
+Swift 2.3:
+pod 'SwiftAssetsPickerController', '~> 0.2.3'
+
+Swift 3.0:
+pod 'SwiftAssetsPickerController', '~> 0.3.2'
 </pre>
 
 <b>Manual:</b>
