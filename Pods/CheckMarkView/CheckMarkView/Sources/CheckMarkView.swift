@@ -10,11 +10,15 @@ import UIKit
 
 public class CheckMarkView: UIView {
 
-	public enum CheckMarkStyle: Int {
-		case Nothing
-		case OpenCircle
-		case GrayedOut
+	// MARK: - Enumerations
+	
+	public enum Style: Int {
+		case nothing
+		case openCircle
+		case grayedOut
 	}
+	
+	// MARK: - Public Properties
 	
 	public var checked: Bool {
 		get {
@@ -26,7 +30,7 @@ public class CheckMarkView: UIView {
 		}
 	}
 
-	public var style: CheckMarkStyle {
+	public var style: Style {
 		get {
 			return _style
 		}
@@ -36,8 +40,12 @@ public class CheckMarkView: UIView {
 		}
 	}
 	
+	// MARK: - Private Properties
+	
 	private var _checked: Bool = false
-	private var _style: CheckMarkStyle = .Nothing
+	private var _style: Style = .nothing
+	
+	// MARK: - Drawing
 	
     override public func draw(_ rect: CGRect) {
 		super.draw(rect)
@@ -46,27 +54,36 @@ public class CheckMarkView: UIView {
 			drawRectChecked(rect: rect)
 		}
 		else {
-			if _style == .OpenCircle {
+			if _style == .openCircle {
 				drawRectOpenCircle(rect: rect)
 			}
-			else if _style == .GrayedOut {
+			else if _style == .grayedOut {
 				drawRectGrayedOut(rect: rect)
 			}
 		}
     }
 	
 	func drawRectChecked(rect: CGRect) {
-		let context = UIGraphicsGetCurrentContext()!
-		let frame = self.bounds
+		guard let context = UIGraphicsGetCurrentContext() else {
+			return
+		}
+		
+		let bounds = self.bounds
 		
 		let checkmarkBlue = UIColor(red: 0.078, green: 0.435, blue: 0.875, alpha: 1)
 		let shadow = UIColor.black
 		let shadowOffset = CGSize(width: 0.1, height: -0.1)
 		let shadowBlurRadius: CGFloat = 2.5
 		
-		let group = CGRect(x: frame.minX + 3, y: frame.minY + 3, width: frame.width - 6, height: frame.height - 6)
+		let group = CGRect(x: bounds.minX + 3,
+		                   y: bounds.minY + 3,
+		                   width: bounds.width - 6,
+		                   height: bounds.height - 6)
 		
-		let checkedOvalPath = UIBezierPath(ovalIn: CGRect(x: group.minX + floor(group.width * 0.00000 + 0.5), y: group.minY + floor(group.height * 0.00000 + 0.5), width: floor(group.width * 1.00000 + 0.5) - floor(group.width * 0.00000 + 0.5), height: floor(group.height * 1.00000 + 0.5) - floor(group.height * 0.00000 + 0.5)))
+		let checkedOvalPath = UIBezierPath(ovalIn: CGRect(x: group.minX + floor(group.width * 0.00000 + 0.5),
+		                                                  y: group.minY + floor(group.height * 0.00000 + 0.5),
+		                                                  width: floor(group.width * 1.00000 + 0.5) - floor(group.width * 0.00000 + 0.5),
+		                                                  height: floor(group.height * 1.00000 + 0.5) - floor(group.height * 0.00000 + 0.5)))
 		
 		context.saveGState()
 		context.setShadow(offset: shadowOffset, blur: shadowBlurRadius, color: shadow.cgColor)
@@ -79,9 +96,12 @@ public class CheckMarkView: UIView {
 		checkedOvalPath.stroke()
 
 		let bezierPath = UIBezierPath()
-		bezierPath.move(to: CGPoint(x: group.minX + 0.27083 * group.width, y: group.minY + 0.54167 * group.height))
-		bezierPath.addLine(to: CGPoint(x: group.minX + 0.41667 * group.width, y: group.minY + 0.68750 * group.height))
-		bezierPath.addLine(to: CGPoint(x: group.minX + 0.75000 * group.width, y: group.minY + 0.35417 * group.height))
+		bezierPath.move(to: CGPoint(x: group.minX + 0.27083 * group.width,
+		                            y: group.minY + 0.54167 * group.height))
+		bezierPath.addLine(to: CGPoint(x: group.minX + 0.41667 * group.width,
+		                               y: group.minY + 0.68750 * group.height))
+		bezierPath.addLine(to: CGPoint(x: group.minX + 0.75000 * group.width,
+		                               y: group.minY + 0.35417 * group.height))
 		bezierPath.lineCapStyle = CGLineCap.square
 		
 		UIColor.white.setStroke()
@@ -90,8 +110,11 @@ public class CheckMarkView: UIView {
 	}
 	
 	func drawRectOpenCircle(rect: CGRect) {
-		let context = UIGraphicsGetCurrentContext()!
-		let frame = self.bounds
+		guard let context = UIGraphicsGetCurrentContext() else {
+			return
+		}
+		
+		let bounds = self.bounds
 		
 		let shadow = UIColor.black
 		let shadowOffset = CGSize(width: 0.1, height: -0.1)
@@ -100,8 +123,14 @@ public class CheckMarkView: UIView {
 		let shadow2Offset = CGSize(width: 0.1, height: -0.1)
 		let shadow2BlurRadius: CGFloat = 2.5
 		
-		let group = CGRect(x: frame.minX + 3, y: frame.minY + 3, width: frame.width - 6, height: frame.height - 6)
-		let emptyOvalPath = UIBezierPath(ovalIn: CGRect(x: group.minX + floor(group.width * 0.00000 + 0.5), y: group.minY + floor(group.height * 0.00000 + 0.5), width: floor(group.width * 1.00000 + 0.5) - floor(group.width * 0.00000 + 0.5), height: floor(group.height * 1.00000 + 0.5) - floor(group.height * 0.00000 + 0.5)))
+		let group = CGRect(x: bounds.minX + 3,
+		                   y: bounds.minY + 3,
+		                   width: bounds.width - 6,
+		                   height: bounds.height - 6)
+		let emptyOvalPath = UIBezierPath(ovalIn: CGRect(x: group.minX + floor(group.width * 0.00000 + 0.5),
+		                                                y: group.minY + floor(group.height * 0.00000 + 0.5),
+		                                                width: floor(group.width * 1.00000 + 0.5) - floor(group.width * 0.00000 + 0.5),
+		                                                height: floor(group.height * 1.00000 + 0.5) - floor(group.height * 0.00000 + 0.5)))
 		
 		context.saveGState()
 		context.setShadow(offset: shadow2Offset, blur: shadow2BlurRadius, color: shadow2.cgColor)
@@ -116,17 +145,26 @@ public class CheckMarkView: UIView {
 	}
 	
 	func drawRectGrayedOut(rect: CGRect) {
-		let context = UIGraphicsGetCurrentContext()!
-		let frame = self.bounds
+		guard let context = UIGraphicsGetCurrentContext() else {
+			return
+		}
+		
+		let bounds = self.bounds
 		
 		let grayTranslucent = UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)
 		let shadow = UIColor.black
 		let shadowOffset = CGSize(width: 0.1, height: -0.1)
 		let shadowBlurRadius: CGFloat = 2.5
 		
-		let group = CGRect(x: frame.minX + 3, y: frame.minY + 3, width: frame.width - 6, height: frame.height - 6)
+		let group = CGRect(x: bounds.minX + 3,
+		                   y: bounds.minY + 3,
+		                   width: bounds.width - 6,
+		                   height: bounds.height - 6)
 		
-		let uncheckedOvalPath = UIBezierPath(ovalIn: CGRect(x: group.minX + floor(group.width * 0.00000 + 0.5), y: group.minY + floor(group.height * 0.00000 + 0.5), width: floor(group.width * 1.00000 + 0.5) - floor(group.width * 0.00000 + 0.5), height: floor(group.height * 1.00000 + 0.5) - floor(group.height * 0.00000 + 0.5)))
+		let uncheckedOvalPath = UIBezierPath(ovalIn: CGRect(x: group.minX + floor(group.width * 0.00000 + 0.5),
+		                                                    y: group.minY + floor(group.height * 0.00000 + 0.5),
+		                                                    width: floor(group.width * 1.00000 + 0.5) - floor(group.width * 0.00000 + 0.5),
+		                                                    height: floor(group.height * 1.00000 + 0.5) - floor(group.height * 0.00000 + 0.5)))
 		
 		context.saveGState()
 		context.setShadow(offset: shadowOffset, blur: shadowBlurRadius, color: shadow.cgColor)
@@ -139,9 +177,12 @@ public class CheckMarkView: UIView {
 		uncheckedOvalPath.stroke()
 		
 		let bezierPath = UIBezierPath()
-		bezierPath.move(to: CGPoint(x: group.minX + 0.27083 * group.width, y: group.minY + 0.54167 * group.height))
-		bezierPath.addLine(to: CGPoint(x: group.minX + 0.41667 * group.width, y: group.minY + 0.68750 * group.height))
-		bezierPath.addLine(to: CGPoint(x: group.minX + 0.75000 * group.width, y: group.minY + 0.35417 * group.height))
+		bezierPath.move(to: CGPoint(x: group.minX + 0.27083 * group.width,
+		                            y: group.minY + 0.54167 * group.height))
+		bezierPath.addLine(to: CGPoint(x: group.minX + 0.41667 * group.width,
+		                               y: group.minY + 0.68750 * group.height))
+		bezierPath.addLine(to: CGPoint(x: group.minX + 0.75000 * group.width,
+		                               y: group.minY + 0.35417 * group.height))
 		bezierPath.lineCapStyle = CGLineCap.square
 		
 		UIColor.white.setStroke()

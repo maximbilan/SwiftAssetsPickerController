@@ -13,7 +13,11 @@ Just simple view which draws programmatically checkmark with some styles.
 
 <b>CocoaPods:</b>
 <pre>
-pod 'CheckMarkView'
+<b>Swift 3.0</b>:
+pod 'CheckMarkView', '~> 0.3.0'
+
+<b>Swift 4.0</b>:
+pod 'CheckMarkView', '~> 0.4.0'
 </pre>
 
 <b>Manual:</b>
@@ -23,7 +27,7 @@ Copy <i>CheckMarkView.swift</i> to your project.
 
 ## Using
 
-You can create from code, or setup view in the <i>Storyboard</i>, <i>XIB</i>.
+You can create from code or setup view in the <i>Storyboard</i>, <i>XIB</i>.
 
 <pre>
 let checkMarkView = CheckMarkView()

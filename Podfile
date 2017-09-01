@@ -3,6 +3,6 @@ use_frameworks!
 
 target "SwiftAssetsPickerController" do
 
-pod 'CheckMarkView', '~> 0.3.0'
+pod 'CheckMarkView'
 
 end

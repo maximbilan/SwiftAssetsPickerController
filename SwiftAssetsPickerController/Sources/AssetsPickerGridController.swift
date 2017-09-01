@@ -62,10 +62,10 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 		assetGridThumbnailSize = CGSize(width: cellSize.width * scale, height: cellSize.height * scale)
 		
 		let assetsFetchResult = (collection == nil) ? PHAsset.fetchAssets(with: .image, options: nil) : PHAsset.fetchAssets(in: collection!, options: nil)
-		assets = assetsFetchResult.objects(at: IndexSet(integersIn: NSMakeRange(0, assetsFetchResult.count).toRange()!)) 
+		assets = assetsFetchResult.objects(at: IndexSet(integersIn: Range(NSMakeRange(0, assetsFetchResult.count))!))
 	}
 	
-	// MARK: UICollectionViewDataSource
+	// MARK: - UICollectionViewDataSource
 	
 	override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		return assets.count
@@ -95,7 +95,7 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 			
 			checkMarkView = CheckMarkView(frame: CGRect(x: cell.contentView.frame.size.width - iconOffset - checkMarkSize.width, y: iconOffset, width: checkMarkSize.width, height: checkMarkSize.height))
 			checkMarkView.backgroundColor = UIColor.clear
-			checkMarkView.style = CheckMarkView.CheckMarkStyle.Nothing
+			checkMarkView.style = CheckMarkView.Style.nothing
 			cell.contentView.addSubview(checkMarkView)
 		}
 		else {
@@ -132,7 +132,7 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 		return cell
 	}
 	
-	// MARK: UICollectionViewDelegate
+	// MARK: - UICollectionViewDelegate
 	
 	override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		if selectedIndexes.contains((indexPath as NSIndexPath).row) {
@@ -146,7 +146,7 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 		collectionView.reloadItems(at: [indexPath])
 	}
 	
-	// MARK: UICollectionViewDelegateFlowLayout
+	// MARK: - UICollectionViewDelegateFlowLayout
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 		let a = (self.view.frame.size.width - assetsInRow * 1 - 2 * collectionViewEdgeInset) / assetsInRow
@@ -167,7 +167,7 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 	
 	// MARK: - Navigation bar actions
 	
-	func doneAction() {
+	@objc func doneAction() {
 		
 		var selectedAssets: Array<PHAsset?> = Array()
 		for index in selectedIndexes {
