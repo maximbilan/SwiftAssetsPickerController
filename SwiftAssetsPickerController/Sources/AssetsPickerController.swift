@@ -164,11 +164,11 @@ open class AssetsPickerController: UITableViewController, PHPhotoLibraryChangeOb
 	
 	// MARK: Navigation bar actions
 	
-	func cancelAction() {
+	@objc func cancelAction() {
 		dismiss(animated: true, completion: nil)
 	}
 	
-	func doneAction() {
+	@objc func doneAction() {
 		
 	}
 	

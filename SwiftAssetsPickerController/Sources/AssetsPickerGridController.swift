@@ -95,7 +95,7 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 			
 			checkMarkView = CheckMarkView(frame: CGRect(x: cell.contentView.frame.size.width - iconOffset - checkMarkSize.width, y: iconOffset, width: checkMarkSize.width, height: checkMarkSize.height))
 			checkMarkView.backgroundColor = UIColor.clear
-			checkMarkView.style = CheckMarkView.CheckMarkStyle.Nothing
+			checkMarkView.style = CheckMarkView.Style.nothing
 			cell.contentView.addSubview(checkMarkView)
 		}
 		else {
@@ -167,7 +167,7 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 	
 	// MARK: - Navigation bar actions
 	
-	func doneAction() {
+	@objc func doneAction() {
 		
 		var selectedAssets: Array<PHAsset?> = Array()
 		for index in selectedIndexes {
