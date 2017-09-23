@@ -3,8 +3,10 @@
 [![Version](https://img.shields.io/cocoapods/v/SwiftAssetsPickerController.svg?style=flat)](http://cocoadocs.org/docsets/SwiftAssetsPickerController)
 [![License](https://img.shields.io/cocoapods/l/SwiftAssetsPickerController.svg?style=flat)](http://cocoadocs.org/docsets/SwiftAssetsPickerController)
 [![Platform](https://img.shields.io/cocoapods/p/SwiftAssetsPickerController.svg?style=flat)](http://cocoadocs.org/docsets/SwiftAssetsPickerController)
+[![CocoaPods](https://img.shields.io/cocoapods/dt/SwiftAssetsPickerController.svg)](https://cocoapods.org/pods/SwiftAssetsPickerController)
+[![CocoaPods](https://img.shields.io/cocoapods/dm/SwiftAssetsPickerController.svg)](https://cocoapods.org/pods/SwiftAssetsPickerController)
 
-Simple assets picker controller based on <i>iOS 8</i> <i>Photos</i> framework. Supports <i>iCloud</i> photos and videos.
+Simple assets picker controller based on <i>Photos</i> framework. Supports <i>iCloud</i> photos and videos.
 
 ![alt tag](https://raw.github.com/maximbilan/SwiftAssetsPickerController/master/img/img1.png)
 ![alt tag](https://raw.github.com/maximbilan/SwiftAssetsPickerController/master/img/img2.png)
