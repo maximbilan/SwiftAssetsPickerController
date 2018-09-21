@@ -71,8 +71,10 @@ open class AssetsPickerController: UITableViewController, PHPhotoLibraryChangeOb
 	// MARK: Data loading
 	
 	func loadData() {
-		tableView.isUserInteractionEnabled = false
-		activityIndicator.startAnimating()
+		DispatchQueue.main.async {
+			self.tableView.isUserInteractionEnabled = false
+			self.activityIndicator.startAnimating()
+		}
 		
 		DispatchQueue.global(qos: .default).async {
 		
