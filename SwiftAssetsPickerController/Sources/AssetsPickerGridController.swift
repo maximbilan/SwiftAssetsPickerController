@@ -99,9 +99,9 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 			cell.contentView.addSubview(checkMarkView)
 		}
 		else {
-			thumbnail = cell.contentView.subviews[0] as! UIImageView
-			typeIcon = cell.contentView.subviews[1] as! UIImageView
-			checkMarkView = cell.contentView.subviews[2] as! CheckMarkView
+			thumbnail = cell.contentView.subviews[0] as? UIImageView
+			typeIcon = cell.contentView.subviews[1] as? UIImageView
+			checkMarkView = cell.contentView.subviews[2] as? CheckMarkView
 		}
 		
 		let asset = assets[(indexPath as NSIndexPath).row]
