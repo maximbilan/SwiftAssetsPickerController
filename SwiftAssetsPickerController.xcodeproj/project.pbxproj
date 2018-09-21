@@ -170,7 +170,7 @@
 					6DD2E79A1B134D7900E8FACF = {
 						CreatedOnToolsVersion = 6.3.2;
 						DevelopmentTeam = 828XSMPA74;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1000;
 					};
 				};
 			};
@@ -423,8 +423,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "maximbilan.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -440,8 +439,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "maximbilan.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};

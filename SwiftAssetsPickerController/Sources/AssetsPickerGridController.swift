@@ -48,13 +48,13 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 		super.viewDidLoad()
 		
 		let flowLayout = UICollectionViewFlowLayout()
-		flowLayout.scrollDirection = UICollectionViewScrollDirection.vertical
+		flowLayout.scrollDirection = UICollectionView.ScrollDirection.vertical
 		
 		collectionView?.collectionViewLayout = flowLayout
 		collectionView?.backgroundColor = UIColor.white
 		collectionView?.register(UICollectionViewCell.classForCoder(), forCellWithReuseIdentifier: reuseIdentifier)
 		
-		navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Done", comment: ""), style: UIBarButtonItemStyle.done, target: self, action: #selector(AssetsPickerGridController.doneAction))
+		navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Done", comment: ""), style: UIBarButtonItem.Style.done, target: self, action: #selector(AssetsPickerGridController.doneAction))
 		navigationItem.rightBarButtonItem?.isEnabled = false
 		
 		let scale = UIScreen.main.scale
@@ -154,7 +154,7 @@ class AssetsPickerGridController: UICollectionViewController, UICollectionViewDe
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-		return UIEdgeInsetsMake(collectionViewEdgeInset, collectionViewEdgeInset, collectionViewEdgeInset, collectionViewEdgeInset)
+		return UIEdgeInsets.init(top: collectionViewEdgeInset, left: collectionViewEdgeInset, bottom: collectionViewEdgeInset, right: collectionViewEdgeInset)
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
